@@ -20,7 +20,6 @@ function onMenuClick(button, action) {
 
 onMenuClick(menuSessions, () => vscode.postMessage({ type: "showSessions" }));
 onMenuClick(menuProvider, () => vscode.postMessage({ type: "showProviders" }));
-onMenuClick(menuModel, () => vscode.postMessage({ type: "selectModel", current: currentModel }));
 onMenuClick(menuAutoApprove, () => vscode.postMessage({ type: "toggleAutoApprove", next: !autoApprove }));
 onMenuClick(menuSkills, () => vscode.postMessage({ type: "toggleSkills", next: !skillsEnabled }));
 onMenuClick(menuDelegation, () => vscode.postMessage({ type: "toggleDelegation", next: !delegationEnabled }));
@@ -39,7 +38,6 @@ function applySettings(message) {
   apiKeyEnv = message.apiKeyEnv || "";
   authHeader = message.authHeader || "";
   providerFile = message.providerFile || "";
-  menuModel.title = currentModel ? "Current: " + currentModel : "Using provider default";
   menuAutoApproveCheck.classList.toggle("checked", autoApprove);
   menuSkillsCheck.classList.toggle("checked", skillsEnabled);
   menuDelegationCheck.classList.toggle("checked", delegationEnabled);

@@ -25,7 +25,6 @@ const menuToggle = document.getElementById("menu-toggle");
 const menu = document.getElementById("menu");
 const menuSessions = document.getElementById("menu-sessions");
 const menuProvider = document.getElementById("menu-provider");
-const menuModel = document.getElementById("menu-model");
 const menuAutoApprove = document.getElementById("menu-auto-approve");
 const menuAutoApproveCheck = document.getElementById("menu-auto-approve-check");
 const menuSkills = document.getElementById("menu-skills");
