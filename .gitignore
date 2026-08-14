@@ -1,3 +1,6 @@
+# VSIX packages
+*.vsix
+
 # Logs
 logs
 *.log
