@@ -5,6 +5,7 @@ export interface ServeArgsOptions {
   skills: boolean;
   delegation: boolean;
   memory: boolean;
+  workspace: boolean;
   autoApprove: boolean;
   mcpServers: string[];
   resolveSetting: (value: string) => string;
@@ -30,6 +31,9 @@ export function buildServeArgs(options: ServeArgsOptions): string[] {
   }
   if (!options.memory) {
     args.push("--no-memory");
+  }
+  if (!options.workspace) {
+    args.push("--no-workspace");
   }
   if (options.autoApprove) {
     args.push("--yes");

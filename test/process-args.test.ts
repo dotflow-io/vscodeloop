@@ -12,6 +12,7 @@ function baseOptions(overrides: Partial<ServeArgsOptions> = {}): ServeArgsOption
     skills: true,
     delegation: false,
     memory: true,
+    workspace: true,
     autoApprove: false,
     mcpServers: [],
     resolveSetting: identity,
@@ -51,6 +52,11 @@ test("adds --delegate only when delegation is enabled", () => {
 test("adds --no-memory only when memory is disabled", () => {
   assert.deepEqual(buildServeArgs(baseOptions({ memory: false })), ["serve", "--no-memory"]);
   assert.deepEqual(buildServeArgs(baseOptions({ memory: true })), ["serve"]);
+});
+
+test("adds --no-workspace only when workspace is disabled", () => {
+  assert.deepEqual(buildServeArgs(baseOptions({ workspace: false })), ["serve", "--no-workspace"]);
+  assert.deepEqual(buildServeArgs(baseOptions({ workspace: true })), ["serve"]);
 });
 
 test("adds --yes only when autoApprove is enabled", () => {

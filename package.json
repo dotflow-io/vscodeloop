@@ -164,6 +164,11 @@
           "default": true,
           "description": "Load .pycodeloop/memory.md into the system prompt and expose a remember tool so standing corrections/preferences persist across sessions instead of being repeated every time. On by default."
         },
+        "pycodeloop.workspace": {
+          "type": "boolean",
+          "default": true,
+          "description": "Jail read_file/write_file/edit_file/delete_file/grep/glob to the workspace root. Does NOT cover bash/git, which run arbitrary shell commands — their only guardrail is the confirm prompt. On by default."
+        },
         "pycodeloop.autoApprove": {
           "type": "boolean",
           "default": false,

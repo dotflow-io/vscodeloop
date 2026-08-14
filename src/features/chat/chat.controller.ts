@@ -155,6 +155,7 @@ export class ChatController {
       skills: settings.skills,
       delegation: settings.delegation,
       memory: settings.memory,
+      workspace: settings.workspace,
       autoApprove: settings.autoApprove,
       mcpServers: settings.mcpServers,
       resolveSetting: (value) => this.resolveSetting(value),

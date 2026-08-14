@@ -10,6 +10,7 @@ export interface PycodeloopSettings {
   skills: boolean;
   delegation: boolean;
   memory: boolean;
+  workspace: boolean;
   autoApprove: boolean;
   mcpServers: string[];
 }
@@ -24,6 +25,7 @@ export function readSettings(): PycodeloopSettings {
     skills: config.get<boolean>("skills", true),
     delegation: config.get<boolean>("delegation", false),
     memory: config.get<boolean>("memory", true),
+    workspace: config.get<boolean>("workspace", true),
     autoApprove: config.get<boolean>("autoApprove", false),
     mcpServers: config.get<string[]>("mcpServers", []),
   };

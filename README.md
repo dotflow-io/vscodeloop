@@ -67,6 +67,11 @@ dangerous tools.
 | `pycodeloop.model` | Model override. |
 | `pycodeloop.url` | Endpoint URL, required when `pycodeloop.provider` is `generic`. |
 | `pycodeloop.skills` | Discover Claude/Cursor/AGENTS.md skills. Default `true`. |
+| `pycodeloop.delegation` | Expose a `delegate` tool for read-only sub-agents on independent subtasks. Default `false`. |
+| `pycodeloop.memory` | Load `.pycodeloop/memory.md` into the system prompt and expose a `remember` tool. Default `true`. |
+| `pycodeloop.workspace` | Jail file tools (`read_file`/`write_file`/`edit_file`/`delete_file`/`grep`/`glob`) to the workspace root — does not cover `bash`/`git`. Default `true`. |
+| `pycodeloop.autoApprove` | Auto-approve dangerous tool calls instead of prompting. Default `false`. |
+| `pycodeloop.mcpServers` | MCP server launch commands, one per `--mcp` flag. |
 
 ## Development
 
