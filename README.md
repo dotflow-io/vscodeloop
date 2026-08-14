@@ -1,12 +1,23 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/dotflow-io/vscodeloop/master/media/icon.png" alt="CodeLoop" width="120">
 </p>
-
-# CodeLoop for VS Code
-
-[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/fernandocelmer.pycodeloop?label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
-[![VS Code](https://img.shields.io/badge/VS%20Code-%5E1.85.0-007ACC)](https://code.visualstudio.com/)
+<p align="center">
+  <strong>CodeLoop for VS Code</strong>
+</p>
+<p align="center">
+    <em>Agentic AI coding assistant in your VS Code sidebar — bring your own model.</em>
+</p>
+<p align="center">
+<a href="https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop" target="_blank">
+    <img src="https://img.shields.io/visual-studio-marketplace/v/fernandocelmer.pycodeloop?label=VS%20Marketplace" alt="VS Marketplace">
+</a>
+<a href="LICENSE.md" target="_blank">
+    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT">
+</a>
+<a href="https://code.visualstudio.com/" target="_blank">
+    <img src="https://img.shields.io/badge/VS%20Code-%5E1.85.0-007ACC" alt="VS Code">
+</a>
+</p>
 
 CodeLoop is an agentic AI coding assistant for VS Code — chat with
 [pycodeloop](https://github.com/dotflow-io/pycodeloop) from a sidebar
