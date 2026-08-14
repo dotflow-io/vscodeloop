@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/dotflow-io/vscodeloop/master/media/icon.png" alt="CodeLoop" width="120">
+</p>
+
 # CodeLoop for VS Code
 
 [![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/fernandocelmer.pycodeloop?label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
