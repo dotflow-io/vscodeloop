@@ -283,6 +283,44 @@ function renderCliMissingCard(command) {
   return box;
 }
 
+function renderCliOutdatedCard(current, latest) {
+  const box = document.createElement("div");
+  box.className = "confirm-box";
+
+  const heading = document.createElement("div");
+  heading.className = "title";
+  heading.textContent = "CodeLoop CLI update available";
+  box.appendChild(heading);
+
+  const desc = document.createElement("div");
+  desc.className = "turn-meta";
+  desc.textContent = `${current} installed, ${latest} available.`;
+  box.appendChild(desc);
+
+  const actions = document.createElement("div");
+  actions.className = "confirm-actions";
+
+  const update = document.createElement("button");
+  update.textContent = "Update CodeLoop CLI";
+  update.addEventListener("click", () => {
+    vscode.postMessage({ type: "updateCli" });
+    box.remove();
+  });
+
+  const dismiss = document.createElement("button");
+  dismiss.className = "secondary";
+  dismiss.textContent = "Dismiss";
+  dismiss.addEventListener("click", () => box.remove());
+
+  actions.appendChild(update);
+  actions.appendChild(dismiss);
+  box.appendChild(actions);
+
+  messagesEl.appendChild(box);
+  scrollToBottom();
+  return box;
+}
+
 const DIFF_TOOLS = new Set(["write_file", "edit_file", "delete_file"]);
 
 function renderDiffBlock(diffText) {

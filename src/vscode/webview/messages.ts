@@ -20,4 +20,5 @@ export type WebviewMessage =
   | { type: "manageMcpServers" }
   | { type: "reload" }
   | { type: "installCli" }
+  | { type: "updateCli" }
   | { type: "openSettings" };

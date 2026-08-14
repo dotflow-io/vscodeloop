@@ -136,6 +136,9 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
       case "installCli":
         this.chat.installCli();
         break;
+      case "updateCli":
+        this.chat.updateCli();
+        break;
       case "openSettings":
         vscode.commands.executeCommand("workbench.action.openSettings", "pycodeloop");
         break;

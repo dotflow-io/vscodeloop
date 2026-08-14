@@ -31,6 +31,9 @@ window.addEventListener("message", (event) => {
       setStatus("ready", shortProviderLabel(message.provider) + " · " + message.model);
       setReady(true);
       break;
+    case "cliOutdated":
+      renderCliOutdatedCard(message.current, message.latest);
+      break;
     case "textDelta":
       appendAssistantDelta(message.delta);
       break;

@@ -3,7 +3,8 @@ import * as cp from "child_process";
 import { RpcClient } from "../../core-client/core-client";
 import { buildServeArgs } from "../../core-client/process-args";
 import { currentWorkspaceFolder, readSettings } from "../../services/settings.service";
-import { buildInstallCommand } from "../../services/terminal.service";
+import { buildInstallCommand, buildUpdateCommand } from "../../services/terminal.service";
+import { fetchLatestVersion, isOutdated, parseVersionOutput } from "../../services/cliVersion.service";
 import {
   API_KEY_SECRET,
   providerApiKeyEnvNames,
@@ -38,6 +39,7 @@ export class ChatController {
     }
     this.post({ type: "connecting" });
     await this.ensureClient();
+    void this.checkCliVersion();
   }
 
   async hasCli(): Promise<boolean> {
@@ -45,6 +47,52 @@ export class ChatController {
     return new Promise((resolve) => {
       cp.exec(`"${command}" --help`, (error) => resolve(!error));
     });
+  }
+
+  async checkCliVersion(): Promise<void> {
+    const command = this.resolveSetting(readSettings().command);
+    const current = await new Promise<string | null>((resolve) => {
+      cp.exec(`"${command}" --version`, (error, stdout) => {
+        resolve(error ? null : parseVersionOutput(stdout));
+      });
+    });
+    if (!current) {
+      return;
+    }
+
+    const latest = await fetchLatestVersion();
+    if (latest && isOutdated(current, latest)) {
+      this.post({ type: "cliOutdated", current, latest });
+    }
+  }
+
+  async updateCli(): Promise<void> {
+    const updateCmd = buildUpdateCommand(process.platform);
+    await vscode.window.withProgress(
+      { location: vscode.ProgressLocation.Notification, title: "Updating CodeLoop CLI…" },
+      () =>
+        new Promise<void>((resolve) => {
+          cp.exec(updateCmd, { timeout: 180000 }, (error, _stdout, stderr) => {
+            if (error) {
+              vscode.window
+                .showErrorMessage(
+                  `Couldn't update pycodeloop automatically: ${stderr || error.message}. ` +
+                    `Run this yourself: ${updateCmd}`,
+                  "Copy command"
+                )
+                .then((choice) => {
+                  if (choice === "Copy command") {
+                    vscode.env.clipboard.writeText(updateCmd);
+                  }
+                });
+            } else {
+              vscode.window.showInformationMessage("CodeLoop CLI updated.");
+              this.reload();
+            }
+            resolve();
+          });
+        })
+    );
   }
 
   async installCli(): Promise<void> {

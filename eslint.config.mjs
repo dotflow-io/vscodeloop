@@ -101,6 +101,7 @@ export default tseslint.config(
         renderApiKeyCard: "writable",
         renderAttachmentsPreview: "writable",
         renderCliMissingCard: "writable",
+        renderCliOutdatedCard: "writable",
         renderCommandMenu: "writable",
         renderConfirmRequest: "writable",
         renderDiffBlock: "writable",
