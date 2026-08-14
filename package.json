@@ -1,21 +1,50 @@
 {
   "name": "pycodeloop",
-  "displayName": "CodeLoop",
-  "description": "Chat with CodeLoop — an agentic coding assistant — inside VS Code.",
+  "displayName": "CodeLoop — AI Coding Agent",
+  "description": "Agentic AI coding assistant in your VS Code sidebar — chat with Anthropic Claude, OpenAI, Gemini, Grok, Groq, AWS Bedrock, DeepSeek, Qwen, Llama, or a local Ollama/LM Studio model to read, edit, and run code in your workspace.",
   "version": "0.3.0",
   "publisher": "fernandocelmer",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dotflow-io/pycodeloop.git",
-    "directory": "vscode-extension"
+    "url": "https://github.com/dotflow-io/vscodeloop.git"
   },
+  "bugs": {
+    "url": "https://github.com/dotflow-io/vscodeloop/issues"
+  },
+  "homepage": "https://github.com/dotflow-io/vscodeloop#readme",
   "license": "MIT",
   "icon": "media/icon.png",
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": [
+    "Chat",
+    "Programming Languages",
+    "Machine Learning",
     "Other"
+  ],
+  "keywords": [
+    "ai",
+    "agent",
+    "agentic",
+    "coding assistant",
+    "chat",
+    "claude",
+    "anthropic",
+    "openai",
+    "gpt",
+    "gemini",
+    "grok",
+    "groq",
+    "deepseek",
+    "qwen",
+    "llama",
+    "ollama",
+    "lm studio",
+    "aws bedrock",
+    "pair programming",
+    "copilot alternative",
+    "pycodeloop"
   ],
   "activationEvents": [],
   "main": "./out/src/extension.js",

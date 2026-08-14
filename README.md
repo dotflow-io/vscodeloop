@@ -1,8 +1,15 @@
 # CodeLoop for VS Code
 
-Chat with [pycodeloop](https://github.com/dotflow-io/pycodeloop) — an
-agentic coding assistant — from a sidebar view instead of the
-terminal.
+[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/fernandocelmer.pycodeloop?label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
+[![VS Code](https://img.shields.io/badge/VS%20Code-%5E1.85.0-007ACC)](https://code.visualstudio.com/)
+
+CodeLoop is an agentic AI coding assistant for VS Code — chat with
+[pycodeloop](https://github.com/dotflow-io/pycodeloop) from a sidebar
+view instead of the terminal to read, edit, and run code in your
+workspace. Bring your own model: Anthropic Claude, OpenAI, Google
+Gemini, xAI Grok, Groq, AWS Bedrock, Moonshot Kimi, DeepSeek, Together
+AI Llama, Alibaba Qwen, NVIDIA NIM, or a local Ollama/LM Studio model.
 
 ## Features
 
@@ -55,3 +62,13 @@ npm run compile   # or `npm run watch`
 
 Press F5 in VS Code (with this folder open) to launch an Extension
 Development Host.
+
+## Related
+
+- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop) — install CodeLoop.
+- [pycodeloop](https://github.com/dotflow-io/pycodeloop) — the agent
+  library and CLI this extension drives.
+
+## License
+
+[MIT](LICENSE.md)
