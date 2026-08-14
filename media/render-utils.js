@@ -60,6 +60,8 @@ function renderTextBlock(text) {
     }
   };
   let i = 0;
+  let lastWasBlock = true;
+  let lastWasBlank = true;
   while (i < lines.length) {
     const line = lines[i];
 
@@ -72,6 +74,8 @@ function renderTextBlock(text) {
         j++;
       }
       html += renderTable(line, bodyLines);
+      lastWasBlock = true;
+      lastWasBlank = false;
       i = j;
       continue;
     }
@@ -83,10 +87,14 @@ function renderTextBlock(text) {
     if (rule) {
       closeList();
       html += "<hr>";
+      lastWasBlock = true;
+      lastWasBlank = false;
     } else if (heading) {
       closeList();
       const level = heading[1].length;
       html += "<h" + level + ">" + renderInline(heading[2]) + "</h" + level + ">";
+      lastWasBlock = true;
+      lastWasBlank = false;
     } else if (bullet) {
       if (listTag !== "ul") {
         closeList();
@@ -94,6 +102,8 @@ function renderTextBlock(text) {
         listTag = "ul";
       }
       html += "<li>" + renderInline(bullet[1]) + "</li>";
+      lastWasBlock = true;
+      lastWasBlank = false;
     } else if (numbered) {
       if (listTag !== "ol") {
         closeList();
@@ -101,12 +111,19 @@ function renderTextBlock(text) {
         listTag = "ol";
       }
       html += "<li>" + renderInline(numbered[1]) + "</li>";
+      lastWasBlock = true;
+      lastWasBlank = false;
     } else if (line.trim() === "") {
       closeList();
-      html += "\n";
+      if (!lastWasBlock && !lastWasBlank) {
+        html += "\n";
+      }
+      lastWasBlank = true;
     } else {
       closeList();
       html += renderInline(line) + "\n";
+      lastWasBlock = false;
+      lastWasBlank = false;
     }
     i++;
   }
