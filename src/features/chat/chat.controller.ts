@@ -3,7 +3,7 @@ import * as cp from "child_process";
 import { RpcClient } from "../../core-client/core-client";
 import { buildServeArgs } from "../../core-client/process-args";
 import { currentWorkspaceFolder, readSettings } from "../../services/settings.service";
-import { buildInstallCommand, buildUpdateCommand } from "../../services/terminal.service";
+import { buildInstallCommand, buildUpdateCommand, buildUserScriptsDirCommand } from "../../services/terminal.service";
 import { fetchLatestVersion, isOutdated, parseVersionOutput } from "../../services/cliVersion.service";
 import {
   API_KEY_SECRET,
@@ -116,12 +116,25 @@ export class ChatController {
                 });
             } else {
               vscode.window.showInformationMessage("CodeLoop CLI installed.");
-              this.reload();
+              this.addUserScriptsDirToPath().finally(() => this.reload());
             }
             resolve();
           });
         })
     );
+  }
+
+  private addUserScriptsDirToPath(): Promise<void> {
+    return new Promise((resolve) => {
+      cp.exec(buildUserScriptsDirCommand(process.platform), (error, stdout) => {
+        const dir = stdout.trim();
+        if (!error && dir && !(process.env.PATH ?? "").includes(dir)) {
+          const sep = process.platform === "win32" ? ";" : ":";
+          process.env.PATH = `${dir}${sep}${process.env.PATH ?? ""}`;
+        }
+        resolve();
+      });
+    });
   }
 
   readAuthFor(provider: string) {
