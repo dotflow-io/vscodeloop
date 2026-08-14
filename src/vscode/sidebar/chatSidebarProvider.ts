@@ -100,6 +100,9 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
       case "changeProviderModel":
         this.settings.changeProviderModel(String(message.id ?? ""));
         break;
+      case "changeProviderKey":
+        this.settings.changeProviderKey(String(message.id ?? ""));
+        break;
       case "disconnectProvider":
         this.settings.disconnectProvider(String(message.id ?? ""));
         break;

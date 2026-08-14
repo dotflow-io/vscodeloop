@@ -8,6 +8,7 @@ export type WebviewMessage =
   | { type: "showProviders" }
   | { type: "connectProvider"; id: string }
   | { type: "changeProviderModel"; id: string }
+  | { type: "changeProviderKey"; id: string }
   | { type: "disconnectProvider"; id: string }
   | { type: "showSessions" }
   | { type: "switchSession"; key: string }

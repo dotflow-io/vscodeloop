@@ -195,13 +195,7 @@ export class SettingsController {
       if (remembered) {
         await this.context.secrets.store(API_KEY_SECRET, remembered);
       } else {
-        const key = await vscode.window.showInputBox({
-          title: `${def.label} API key`,
-          prompt: `Stored securely, sent as ${def.file === "anthropic.json" ? "x-api-key" : "Authorization: Bearer …"}`,
-          password: true,
-          ignoreFocusOut: true,
-        });
-        const trimmed = key?.trim();
+        const trimmed = await this.promptForKey(def);
         if (trimmed) {
           await this.context.secrets.store(API_KEY_SECRET, trimmed);
           await this.context.secrets.store(providerKeySecret(def.id), trimmed);
@@ -218,6 +212,37 @@ export class SettingsController {
     await this.postSettings();
     await this.showProviderGallery();
     this.reload();
+  }
+
+  private async promptForKey(
+    def: (typeof PROVIDER_CATALOG)[number]
+  ): Promise<string | undefined> {
+    const key = await vscode.window.showInputBox({
+      title: `${def.label} API key`,
+      prompt: `Stored securely, sent as ${def.file === "anthropic.json" ? "x-api-key" : "Authorization: Bearer …"}`,
+      password: true,
+      ignoreFocusOut: true,
+    });
+    return key?.trim() || undefined;
+  }
+
+  async changeProviderKey(id: string): Promise<void> {
+    const def = findProviderDef(id);
+    if (!def || def.local) {
+      return;
+    }
+    const trimmed = await this.promptForKey(def);
+    if (!trimmed) {
+      return;
+    }
+    await this.context.secrets.store(providerKeySecret(def.id), trimmed);
+
+    if (this.activeProviderId(readSettings().provider) === id) {
+      await this.context.secrets.store(API_KEY_SECRET, trimmed);
+      await this.postSettings();
+      this.reload();
+    }
+    await this.showProviderGallery();
   }
 
   async changeProviderModel(id: string): Promise<void> {

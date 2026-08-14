@@ -140,6 +140,16 @@ function renderProviderGallery(items) {
       vscode.postMessage({ type: "changeProviderModel", id: item.id });
     });
 
+    const keyBtn = document.createElement("button");
+    keyBtn.className = "secondary";
+    keyBtn.textContent = item.connected ? "Update Key" : "Set Key";
+    keyBtn.title = item.connected
+      ? "Replace the saved API key for this provider"
+      : "Set the API key for this provider";
+    keyBtn.addEventListener("click", () => {
+      vscode.postMessage({ type: "changeProviderKey", id: item.id });
+    });
+
     const action = document.createElement("button");
     if (item.active) {
       action.className = "secondary";
@@ -151,7 +161,11 @@ function renderProviderGallery(items) {
       });
     }
 
-    actions.append(modelBtn, action);
+    actions.append(modelBtn);
+    if (!item.local) {
+      actions.append(keyBtn);
+    }
+    actions.append(action);
     body.append(desc, actions);
     card.append(head, body);
     galleryList.appendChild(card);
