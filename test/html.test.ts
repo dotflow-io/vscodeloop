@@ -39,7 +39,6 @@ test("includes the elements main.js expects to find by id", () => {
     "menu-auto-approve-check",
     "menu-skills-check",
     "menu-mcp",
-    "menu-api-key",
   ]) {
     assert.ok(html.includes(`id="${id}"`), `missing #${id}`);
   }

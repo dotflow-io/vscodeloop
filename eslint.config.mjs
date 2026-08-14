@@ -72,8 +72,6 @@ export default tseslint.config(
         markToolAutoApproved: "writable",
         memoryEnabled: "writable",
         menu: "writable",
-        menuApiKey: "writable",
-        menuApiKeyLabel: "writable",
         menuAutoApprove: "writable",
         menuAutoApproveCheck: "writable",
         menuDelegation: "writable",
