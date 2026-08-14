@@ -60,7 +60,8 @@
       },
       {
         "command": "pycodeloop.newSession",
-        "title": "CodeLoop: New Session"
+        "title": "CodeLoop: New Session",
+        "icon": "$(add)"
       },
       {
         "command": "pycodeloop.selectProvider",
@@ -78,6 +79,30 @@
         "icon": "$(history)"
       }
     ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "pycodeloop.newSession",
+          "when": "view == pycodeloop.chat",
+          "group": "navigation@1"
+        },
+        {
+          "command": "pycodeloop.selectSession",
+          "when": "view == pycodeloop.chat",
+          "group": "navigation@2"
+        },
+        {
+          "command": "pycodeloop.selectProvider",
+          "when": "view == pycodeloop.chat",
+          "group": "navigation@3"
+        },
+        {
+          "command": "pycodeloop.selectConfig",
+          "when": "view == pycodeloop.chat",
+          "group": "navigation@4"
+        }
+      ]
+    },
     "viewsContainers": {
       "activitybar": [
         {
