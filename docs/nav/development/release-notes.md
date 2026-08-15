@@ -1,5 +1,13 @@
 # Release Notes
 
+## v0.3.3
+
+- [🪲 Bug: Fix RpcClient pending requests leak (#1)](https://github.com/dotflow-io/vscodeloop/pull/13)
+- [🪲 Bug: Fix settings not persisting in single-file mode (#2)](https://github.com/dotflow-io/vscodeloop/pull/14)
+- [🪲 Bug: Fix image attachments always sent as image/png (#3)](https://github.com/dotflow-io/vscodeloop/pull/15)
+- [⚠️ Security: Fix shell injection risk and missing timeout in hasCli()/checkCliVersion() (#6)](https://github.com/dotflow-io/vscodeloop/pull/16)
+- [🪲 Bug: Kill child process on extension deactivate (#8)](https://github.com/dotflow-io/vscodeloop/pull/17)
+
 ## v0.3.2
 
 - 📘 MkDocs Material documentation site added (`docs/`, `mkdocs.yml`) — Concepts (architecture, settings), How-to guides (install, quick start, provider gallery, sessions, delegation, MCP servers, troubleshooting), Development Guide, and reference tables for settings/commands/RPC protocol
