@@ -4,6 +4,9 @@
 
 - [📦 Marketplace - Build 0.4.0](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
 - [⚙️ Feature: Replace tool-card emoji with codicons, go-to-file, and auto-approved diffs (#21)](https://github.com/dotflow-io/vscodeloop/pull/22)
+- [⚠️ Security: Jail openFile to the workspace root and validate the message payload](https://github.com/dotflow-io/vscodeloop/pull/22)
+- [🪲 Bug: Fix the auto-approved badge spinning with the pending-tool icon](https://github.com/dotflow-io/vscodeloop/pull/22)
+- [🪲 Bug: Fix the pending-tool loading icon overflowing its card](https://github.com/dotflow-io/vscodeloop/pull/22)
 
 ## v0.3.5
 
