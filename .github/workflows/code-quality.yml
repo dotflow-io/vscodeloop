@@ -1,0 +1,32 @@
+name: 🔍 Code Quality
+
+on:
+  pull_request:
+    branches: ["main", "master"]
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: 🔍 ESLint
+        run: npm run lint
+
+      - name: 🔍 TypeScript (Type Checking)
+        run: npx tsc --noEmit -p .
+
+      - name: ✅ Code Quality Summary
+        if: always()
+        run: |
+          echo "### Code Quality Checks Completed ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "All code quality tools have been executed." >> $GITHUB_STEP_SUMMARY

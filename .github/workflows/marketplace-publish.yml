@@ -1,0 +1,124 @@
+name: 📦 Package Marketplace
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  update-version:
+    name: Update Version Files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.event.release.target_commitish }}
+          fetch-depth: 0
+
+      - name: 🔍 Determine branch
+        id: get_branch
+        run: |
+          TARGET="${{ github.event.release.target_commitish }}"
+          BRANCH="${TARGET#refs/heads/}"
+          BRANCH="${BRANCH#refs/tags/}"
+
+          if git rev-parse --verify "$BRANCH"^{tag} >/dev/null 2>&1 || [[ "$TARGET" == refs/tags/* ]]; then
+            git fetch --all --tags
+            TAG_NAME="${TARGET#refs/tags/}"
+            BRANCH=$(git branch -r --contains "$TAG_NAME" | grep -E "(main|master|develop)" | head -1 | sed 's|origin/||' | xargs || \
+                     git branch -r --contains "$TAG_NAME" | head -1 | sed 's|origin/||' | xargs || \
+                     echo "master")
+          fi
+
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "Using branch: $BRANCH"
+
+      - name: 🔄 Checkout resolved branch
+        run: |
+          git checkout ${{ steps.get_branch.outputs.branch }}
+          git pull origin ${{ steps.get_branch.outputs.branch }}
+
+      - name: 🔍 Extract version from tag
+        id: extract_version
+        uses: ./.github/actions/extract-version
+        with:
+          tag: ${{ github.event.release.tag_name }}
+
+      - name: 📝 Update version files
+        uses: ./.github/actions/update-version
+        with:
+          version: ${{ steps.extract_version.outputs.version }}
+
+      - name: 💾 Commit and push
+        uses: ./.github/actions/commit-push
+        with:
+          message: "📦 NPM: Update version to ${{ steps.extract_version.outputs.version }}"
+          files: "package.json package-lock.json"
+          branch: ${{ steps.get_branch.outputs.branch }}
+
+  test:
+    name: Run Tests
+    needs: [update-version]
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  code-quality:
+    name: Code Quality Checks
+    needs: [update-version]
+    uses: ./.github/workflows/code-quality.yml
+    secrets: inherit
+
+  deploy:
+    name: Publish to VS Code Marketplace
+    needs: [update-version, test, code-quality]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Determine branch
+        id: get_branch_deploy
+        run: |
+          TARGET="${{ github.event.release.target_commitish }}"
+          BRANCH="${TARGET#refs/heads/}"
+          BRANCH="${BRANCH#refs/tags/}"
+
+          if [[ "$TARGET" == refs/tags/* ]] || git rev-parse --verify "$BRANCH"^{tag} >/dev/null 2>&1; then
+            TAG_NAME="${TARGET#refs/tags/}"
+            BRANCH=$(git branch -r --contains "$TAG_NAME" | grep -E "(main|master|develop)" | head -1 | sed 's|origin/||' | xargs || \
+                     git branch -r --contains "$TAG_NAME" | head -1 | sed 's|origin/||' | xargs || \
+                     echo "master")
+          fi
+
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "Using branch: $BRANCH"
+
+      - name: 🔄 Checkout branch and pull latest
+        run: |
+          git checkout ${{ steps.get_branch_deploy.outputs.branch }}
+          git pull origin ${{ steps.get_branch_deploy.outputs.branch }}
+
+      - name: 🔍 Verify version
+        uses: ./.github/actions/verify-version
+        with:
+          expected: ${{ github.event.release.tag_name }}
+
+      - name: 📦 Build Package
+        id: build
+        uses: ./.github/actions/build-package
+
+      - name: 📦 Publish to VS Code Marketplace
+        run: |
+          npx vsce publish \
+            --packagePath "${{ steps.build.outputs.vsix-path }}" \
+            ${{ github.event.release.prerelease && '--pre-release' || '' }}
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}

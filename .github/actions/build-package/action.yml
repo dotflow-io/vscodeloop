@@ -1,0 +1,33 @@
+name: Build Package
+description: Package the VS Code extension into a .vsix
+
+inputs:
+  node-version:
+    description: Node version to use
+    required: false
+    default: "20"
+
+outputs:
+  vsix-path:
+    description: Path to the built .vsix file
+    value: ${{ steps.package.outputs.path }}
+
+runs:
+  using: composite
+  steps:
+    - name: 📦 Set up Node ${{ inputs.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: npm
+
+    - name: ⚙️ Install dependencies
+      shell: bash
+      run: npm ci
+
+    - name: 📦 Package extension
+      id: package
+      shell: bash
+      run: |
+        npx vsce package
+        echo "path=$(ls *.vsix | head -1)" >> $GITHUB_OUTPUT

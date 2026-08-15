@@ -1,0 +1,23 @@
+name: Update Version
+description: Update version in package.json and package-lock.json
+
+inputs:
+  version:
+    description: Version to set
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: 📝 Update package.json / package-lock.json
+      shell: bash
+      run: |
+        npm version "${{ inputs.version }}" --no-git-tag-version --allow-same-version
+
+    - name: 🔍 Verify changes
+      shell: bash
+      run: |
+        echo "=== package.json version ==="
+        node -p "require('./package.json').version"
+        echo "=== package-lock.json version ==="
+        node -p "require('./package-lock.json').version"

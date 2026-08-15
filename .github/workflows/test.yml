@@ -1,0 +1,27 @@
+name: 🧪 Tests
+
+on:
+  pull_request:
+    branches: ["main", "master"]
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: 🧪 Run tests
+        run: npm test
+
+      - name: ✅ Test Summary
+        if: always()
+        run: |
+          echo "### Tests Completed ✅" >> $GITHUB_STEP_SUMMARY
