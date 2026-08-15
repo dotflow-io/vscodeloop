@@ -45,14 +45,14 @@ export class ChatController {
   async hasCli(): Promise<boolean> {
     const command = this.resolveSetting(readSettings().command);
     return new Promise((resolve) => {
-      cp.exec(`"${command}" --help`, (error) => resolve(!error));
+      cp.execFile(command, ["--help"], { timeout: 5000 }, (error) => resolve(!error));
     });
   }
 
   async checkCliVersion(): Promise<void> {
     const command = this.resolveSetting(readSettings().command);
     const current = await new Promise<string | null>((resolve) => {
-      cp.exec(`"${command}" --version`, (error, stdout) => {
+      cp.execFile(command, ["--version"], { timeout: 5000 }, (error, stdout) => {
         resolve(error ? null : parseVersionOutput(stdout));
       });
     });
