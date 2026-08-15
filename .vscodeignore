@@ -5,3 +5,13 @@ tsconfig.json
 **/*.map
 node_modules/**
 *.vsix
+test/**
+docs/**
+docs-requirements.txt
+mkdocs.yml
+site/**
+.venv/**
+AGENTS.md
+.github/**
+.eslintrc*
+eslint.config.mjs

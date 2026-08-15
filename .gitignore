@@ -3,6 +3,7 @@
 
 # MkDocs build output
 site/
+.venv/
 
 # Logs
 logs
