@@ -151,15 +151,22 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
         vscode.commands.executeCommand("workbench.action.openSettings", "pycodeloop");
         break;
       case "openFile":
-        this.openFile(message.path);
+        if (typeof message.path === "string" && message.path.length > 0) {
+          this.openFile(message.path);
+        }
         break;
     }
   }
 
   private openFile(filePath: string): void {
-    const uri = path.isAbsolute(filePath)
-      ? vscode.Uri.file(filePath)
-      : vscode.Uri.file(path.join(currentWorkspaceFolder(), filePath));
+    const root = currentWorkspaceFolder();
+    const resolved = path.isAbsolute(filePath) ? filePath : path.join(root, filePath);
+    const normalized = path.normalize(resolved);
+    if (!normalized.startsWith(path.normalize(root) + path.sep)) {
+      vscode.window.showErrorMessage(`Path outside workspace: ${filePath}`);
+      return;
+    }
+    const uri = vscode.Uri.file(normalized);
     vscode.window.showTextDocument(uri).then(undefined, () => {
       vscode.window.showErrorMessage(`Couldn't open ${filePath}`);
     });
