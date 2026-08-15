@@ -5,6 +5,7 @@ export function activate(context: vscode.ExtensionContext): void {
   const provider = new ChatViewProvider(context);
 
   context.subscriptions.push(
+    provider,
     vscode.window.registerWebviewViewProvider("pycodeloop.chat", provider, {
       webviewOptions: { retainContextWhenHidden: true },
     }),
