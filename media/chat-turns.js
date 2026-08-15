@@ -88,11 +88,11 @@ function addUserTurn(text, images) {
     const strip = document.createElement("div");
     strip.className = "turn-attachments";
     strip.style.marginBottom = "6px";
-    for (const base64 of images) {
+    for (const image of images) {
       const thumb = document.createElement("div");
       thumb.className = "attachment-thumb";
       const img = document.createElement("img");
-      img.src = "data:image/png;base64," + base64;
+      img.src = image.startsWith("data:") ? image : "data:image/png;base64," + image;
       thumb.appendChild(img);
       strip.appendChild(thumb);
     }

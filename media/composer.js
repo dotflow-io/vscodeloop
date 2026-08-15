@@ -9,11 +9,11 @@ function shortProviderLabel(provider) {
 function renderAttachmentsPreview() {
   attachmentsEl.innerHTML = "";
   attachmentsEl.hidden = pendingImages.length === 0;
-  pendingImages.forEach((base64, index) => {
+  pendingImages.forEach((dataUrl, index) => {
     const thumb = document.createElement("div");
     thumb.className = "attachment-thumb";
     const img = document.createElement("img");
-    img.src = "data:image/png;base64," + base64;
+    img.src = dataUrl;
     const remove = document.createElement("button");
     remove.className = "remove";
     remove.textContent = "✕";
@@ -34,9 +34,9 @@ function addPendingImageFile(file) {
   }
   const reader = new FileReader();
   reader.onload = () => {
-    const base64 = String(reader.result).split(",")[1];
-    if (base64) {
-      pendingImages.push(base64);
+    const dataUrl = String(reader.result);
+    if (dataUrl.startsWith("data:")) {
+      pendingImages.push(dataUrl);
       renderAttachmentsPreview();
     }
   };
