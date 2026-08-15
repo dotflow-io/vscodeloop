@@ -2,7 +2,7 @@
   "name": "pycodeloop",
   "displayName": "CodeLoop — AI Coding Agent",
   "description": "Agentic AI coding assistant in your VS Code sidebar — chat with Anthropic Claude, OpenAI, Gemini, Grok, Groq, AWS Bedrock, Moonshot Kimi, DeepSeek, Together AI Llama, Alibaba Qwen, NVIDIA NIM, or a local Ollama/LM Studio model to read, edit, and run code in your workspace.",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "publisher": "fernandocelmer",
   "repository": {
     "type": "git",

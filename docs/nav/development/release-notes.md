@@ -1,5 +1,9 @@
 # Release Notes
 
+## v0.3.4
+
+- [🪲 Bug: Fix messages blending together across tool calls (#18)](https://github.com/dotflow-io/vscodeloop/pull/18)
+
 ## v0.3.3
 
 - [🪲 Bug: Fix RpcClient pending requests leak (#1)](https://github.com/dotflow-io/vscodeloop/pull/13)
