@@ -1,8 +1,11 @@
 import * as vscode from "vscode";
 import { ChatViewProvider } from "./vscode/sidebar/chatSidebarProvider";
 
+let activeProvider: ChatViewProvider | undefined;
+
 export function activate(context: vscode.ExtensionContext): void {
   const provider = new ChatViewProvider(context);
+  activeProvider = provider;
 
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider("pycodeloop.chat", provider, {
@@ -26,4 +29,7 @@ export function activate(context: vscode.ExtensionContext): void {
   );
 }
 
-export function deactivate(): void {}
+export function deactivate(): void {
+  activeProvider?.dispose();
+  activeProvider = undefined;
+}
