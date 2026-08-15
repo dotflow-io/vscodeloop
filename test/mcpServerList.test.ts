@@ -28,6 +28,34 @@ test("addServer appends without mutating the input", () => {
   assert.deepEqual(original, ["a"]);
 });
 
+test("addServer trims whitespace from the new command", () => {
+  const original = ["a"];
+  const next = addServer(original, "  b  ");
+  assert.deepEqual(next, ["a", "b"]);
+  assert.deepEqual(original, ["a"]);
+});
+
+test("addServer ignores empty or whitespace-only commands", () => {
+  const original = ["a"];
+  assert.deepEqual(addServer(original, ""), ["a"]);
+  assert.deepEqual(addServer(original, "   "), ["a"]);
+  assert.deepEqual(original, ["a"]);
+});
+
+test("addServer ignores duplicate commands", () => {
+  const original = ["a", "b"];
+  assert.deepEqual(addServer(original, "a"), ["a", "b"]);
+  assert.deepEqual(addServer(original, "  a  "), ["a", "b"]);
+  assert.deepEqual(original, ["a", "b"]);
+});
+
+test("addServer ignores duplicate commands when existing entries contain whitespace", () => {
+  const original = ["  a  ", "b"];
+  assert.deepEqual(addServer(original, "a"), ["  a  ", "b"]);
+  assert.deepEqual(addServer(original, "  a  "), ["  a  ", "b"]);
+  assert.deepEqual(original, ["  a  ", "b"]);
+});
+
 test("removeServer drops a matching entry without mutating the input", () => {
   const original = ["a", "b", "c"];
   const next = removeServer(original, "b");
@@ -37,4 +65,15 @@ test("removeServer drops a matching entry without mutating the input", () => {
 
 test("removeServer is a no-op when the command isn't found", () => {
   assert.deepEqual(removeServer(["a"], "missing"), ["a"]);
+});
+
+test("removeServer trims both sides so legacy whitespace-padded entries can be removed", () => {
+  assert.deepEqual(removeServer(["  a  ", "b"], "a"), ["b"]);
+  assert.deepEqual(removeServer(["a", "b"], "  a  "), ["b"]);
+});
+
+test("a server added via addServer can be removed via removeServer", () => {
+  const after = addServer(["a"], "  b  ");
+  assert.deepEqual(after, ["a", "b"]);
+  assert.deepEqual(removeServer(after, "b"), ["a"]);
 });
