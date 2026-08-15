@@ -1,6 +1,9 @@
 # VSIX packages
 *.vsix
 
+# MkDocs build output
+site/
+
 # Logs
 logs
 *.log

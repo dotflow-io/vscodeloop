@@ -1,0 +1,108 @@
+site_name: CodeLoop for VS Code
+site_url: https://dotflow-io.github.io/vscodeloop/
+site_author: Fernando Celmer
+
+copyright: Fernando Celmer
+repo_name: dotflow-io/vscodeloop
+repo_url: https://github.com/dotflow-io/vscodeloop
+
+theme:
+  name: material
+  logo: assets/logo.png
+  favicon: assets/logo.ico
+  palette:
+    - media: (prefers-color-scheme)
+      toggle:
+        icon: material/brightness-7
+        name: Switch to light mode
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      primary: black
+      toggle:
+        icon: material/brightness-4
+        name: Switch to dark mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      primary: black
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to system preference
+  features:
+  - content.tooltips
+  - navigation.footer
+  - navigation.tabs
+  - navigation.tabs.sticky
+  - navigation.top
+  - navigation.path
+  - navigation.indexes
+  - search.share
+  - search.suggest
+
+extra_css:
+  - assets/style.css
+
+markdown_extensions:
+  abbr: null
+  attr_list: null
+  footnotes: null
+  md_in_html: null
+  tables: null
+  toc:
+    permalink: true
+  pymdownx.betterem: null
+  pymdownx.caret: null
+  pymdownx.highlight:
+    line_spans: __span
+  pymdownx.inlinehilite: null
+  pymdownx.keys: null
+  pymdownx.mark: null
+  pymdownx.superfences:
+    custom_fences:
+    - name: mermaid
+      class: mermaid
+      format: !!python/name:pymdownx.superfences.fence_code_format ''
+  pymdownx.tilde: null
+  pymdownx.emoji:
+    emoji_index: !!python/name:material.extensions.emoji.twemoji
+    emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  pymdownx.blocks.admonition:
+    types:
+    - note
+    - attention
+    - caution
+    - danger
+    - error
+    - tip
+    - hint
+    - warning
+    - info
+    - check
+  pymdownx.blocks.details: null
+  pymdownx.blocks.tab:
+    alternate_style: true
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Concepts:
+    - Overview: nav/concepts/index.md
+    - Architecture: nav/concepts/concept-architecture.md
+    - Settings: nav/concepts/concept-settings.md
+  - How-to guides:
+    - Overview: nav/how-to/index.md
+    - nav/how-to/install.md
+    - nav/how-to/quick-start.md
+    - nav/how-to/provider-gallery.md
+    - nav/how-to/sessions.md
+    - nav/how-to/delegation.md
+    - nav/how-to/mcp-servers.md
+    - nav/how-to/troubleshooting.md
+  - Development Guide:
+    - nav/development/development-guide.md
+    - nav/development/release-notes.md
+  - Reference:
+    - nav/reference/settings.md
+    - nav/reference/commands.md
+    - nav/reference/rpc-protocol.md
