@@ -2,6 +2,7 @@
 
 ## v0.3.5
 
+- [📦 Marketplace - Build 0.3.5](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
 - [🪲 Bug: Fix stale process exit handler breaking provider/model switches (#19)](https://github.com/dotflow-io/vscodeloop/pull/20)
 
 ## v0.3.4
