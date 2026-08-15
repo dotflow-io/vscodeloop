@@ -66,6 +66,7 @@ function send() {
   pendingImages = [];
   renderAttachmentsPreview();
   assistantTurn = null;
+  turnEndSeen = false;
   setBusy(true);
   showThinkingIndicator();
   vscode.postMessage({ type: "sendPrompt", prompt, images });

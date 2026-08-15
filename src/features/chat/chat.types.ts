@@ -1,6 +1,7 @@
 export const FORWARDED_NOTIFICATIONS = [
   "ready",
   "chat/textDelta",
+  "chat/turnEnd",
   "chat/toolCall",
   "chat/toolResult",
   "chat/usage",

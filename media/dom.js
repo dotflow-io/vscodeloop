@@ -53,6 +53,7 @@ const sessionGalleryNew = document.getElementById("session-gallery-new");
 
 let assistantTurn = null;
 let pendingAssistantText = "";
+let turnEndSeen = false;
 let isBusy = false;
 const pendingToolCards = new Map();
 let currentModel = "";
