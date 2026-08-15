@@ -1,6 +1,6 @@
 # Release Notes
 
-## v0.3.1
+## v0.3.2
 
 - ⚙️ New-session icon and a dedicated Sessions page (toolbar button, replacing the native quickpick) — cards show message count, working directory, last-updated time, and an Active badge
 - ⚙️ Claude Code-style status line ("● Thinking… · 12s") with a live elapsed-time counter, switching to "N sub-agents working…" while parallel `delegate` calls are in flight
