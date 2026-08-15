@@ -16,6 +16,9 @@
 - 🎨 `src/` restructured into `features/` (chat, sessions, settings), `vscode/` (webview shell, sidebar), `core-client/` (RPC client, process management, wire protocol), `services/` (credentials, settings, storage, terminal, workspace)
 - 📘 `AGENTS.md` added capturing standing rules (provider JSONs synced with pycodeloop's templates, verify model IDs against current vendor docs, rebuild+reinstall the `.vsix` after every change)
 - 📘 SEO pass — `package.json` keywords/categories, README badges, GitHub topics, `description` synced with the provider list actually supported
+- 📘 MkDocs Material documentation site added (`docs/`, `mkdocs.yml`) — Concepts (architecture, settings), How-to guides (install, quick start, provider gallery, sessions, delegation, MCP servers, troubleshooting), Development Guide, and reference tables for settings/commands/RPC protocol
+- ⬆️ CI/CD — `code-quality.yml` (ESLint + `tsc --noEmit`) and `test.yml` (`npm test`) run on every PR; `marketplace-publish.yml` bumps `package.json`/`package-lock.json` from the release tag, runs tests + quality, packages the `.vsix`, and publishes to the VS Code Marketplace via `vsce publish` (`--pre-release` for prereleases) on `release: published`
+- 🪲 `.vscodeignore` wasn't excluding `test/`, `docs/`, `.github/`, or a stray local `.venv/` — the packaged `.vsix` was 17,751 files / 37MB; now 61 files / 324KB
 
 ## v0.3.0
 
