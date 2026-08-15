@@ -14,9 +14,14 @@ export function parseServerLabel(label: string): string | null {
 }
 
 export function addServer(servers: string[], server: string): string[] {
-  return [...servers, server];
+  const trimmed = server.trim();
+  if (!trimmed || servers.some((existing) => existing.trim() === trimmed)) {
+    return [...servers];
+  }
+  return [...servers, trimmed];
 }
 
 export function removeServer(servers: string[], server: string): string[] {
-  return servers.filter((s) => s !== server);
+  const trimmed = server.trim();
+  return servers.filter((s) => s.trim() !== trimmed);
 }
