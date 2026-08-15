@@ -7,6 +7,7 @@
 
 ## v0.3.4
 
+- [📦 Marketplace - Build 0.3.4](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
 - [🪲 Bug: Fix messages blending together across tool calls (#18)](https://github.com/dotflow-io/vscodeloop/pull/18)
 
 ## v0.3.3
