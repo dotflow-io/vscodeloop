@@ -37,6 +37,10 @@ window.addEventListener("message", (event) => {
     case "textDelta":
       appendAssistantDelta(message.delta);
       break;
+    case "turnEnd":
+      turnEndSeen = true;
+      finishAssistantTurn();
+      break;
     case "toolCall":
       renderToolCall(message.name, message.arguments);
       break;
@@ -73,7 +77,8 @@ window.addEventListener("message", (event) => {
       addSystemNote("Retrying (" + message.attempt + "/3) — " + message.error, true);
       break;
     case "done":
-      finishAssistantTurn(message.text);
+      finishAssistantTurn(turnEndSeen ? undefined : message.text);
+      turnEndSeen = false;
       setBusy(false);
       break;
     case "error":
