@@ -66,3 +66,14 @@ test("removeServer drops a matching entry without mutating the input", () => {
 test("removeServer is a no-op when the command isn't found", () => {
   assert.deepEqual(removeServer(["a"], "missing"), ["a"]);
 });
+
+test("removeServer trims both sides so legacy whitespace-padded entries can be removed", () => {
+  assert.deepEqual(removeServer(["  a  ", "b"], "a"), ["b"]);
+  assert.deepEqual(removeServer(["a", "b"], "  a  "), ["b"]);
+});
+
+test("a server added via addServer can be removed via removeServer", () => {
+  const after = addServer(["a"], "  b  ");
+  assert.deepEqual(after, ["a", "b"]);
+  assert.deepEqual(removeServer(after, "b"), ["a"]);
+});
