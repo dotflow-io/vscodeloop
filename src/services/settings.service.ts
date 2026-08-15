@@ -42,5 +42,10 @@ export function updateSetting<K extends keyof PycodeloopSettings>(
 }
 
 export function currentWorkspaceFolder(): string {
+  const activeUri = vscode.window.activeTextEditor?.document.uri;
+  const activeFolder = activeUri && vscode.workspace.getWorkspaceFolder(activeUri);
+  if (activeFolder) {
+    return activeFolder.uri.fsPath;
+  }
   return vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? process.cwd();
 }
