@@ -35,9 +35,10 @@ export function updateSetting<K extends keyof PycodeloopSettings>(
   key: K,
   value: PycodeloopSettings[K]
 ): Thenable<void> {
-  return vscode.workspace
-    .getConfiguration(SECTION)
-    .update(key, value, vscode.ConfigurationTarget.Workspace);
+  const target = vscode.workspace.workspaceFolders?.length
+    ? vscode.ConfigurationTarget.Workspace
+    : vscode.ConfigurationTarget.Global;
+  return vscode.workspace.getConfiguration(SECTION).update(key, value, target);
 }
 
 export function currentWorkspaceFolder(): string {
