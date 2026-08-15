@@ -20,10 +20,21 @@ export class RpcClient extends EventEmitter {
       }
     });
     this.process.on("stderr", (text: string) => this.emit("stderr", text));
-    this.process.on("exit", (info: { code: number | null; signal: string | null }) =>
-      this.emit("exit", info)
-    );
-    this.process.on("spawnError", (error: NodeJS.ErrnoException) => this.emit("spawnError", error));
+    this.process.on("exit", (info: { code: number | null; signal: string | null }) => {
+      this.rejectPending("pycodeloop serve exited");
+      this.emit("exit", info);
+    });
+    this.process.on("spawnError", (error: NodeJS.ErrnoException) => {
+      this.rejectPending(error.message);
+      this.emit("spawnError", error);
+    });
+  }
+
+  private rejectPending(message: string): void {
+    for (const [id, resolve] of this.pending) {
+      resolve({ jsonrpc: "2.0", id, error: { code: -32000, message } });
+    }
+    this.pending.clear();
   }
 
   private dispatch(message: RpcMessage): void {
@@ -53,7 +64,7 @@ export class RpcClient extends EventEmitter {
   }
 
   dispose(): void {
-    this.pending.clear();
+    this.rejectPending("Disposed");
     this.process.kill();
   }
 }
