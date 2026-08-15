@@ -1,5 +1,9 @@
 # Release Notes
 
+## v0.3.5
+
+- [🪲 Bug: Fix stale process exit handler breaking provider/model switches (#19)](https://github.com/dotflow-io/vscodeloop/pull/20)
+
 ## v0.3.4
 
 - [🪲 Bug: Fix messages blending together across tool calls (#18)](https://github.com/dotflow-io/vscodeloop/pull/18)
