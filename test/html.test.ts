@@ -6,6 +6,7 @@ const OPTIONS = {
   cspSource: "vscode-webview://abc",
   scriptUris: ["vscode-webview://abc/dom.js", "vscode-webview://abc/app.js"],
   styleUri: "vscode-webview://abc/main.css",
+  codiconUri: "vscode-webview://abc/codicon/codicon.css",
   nonce: "test-nonce",
 };
 
@@ -23,10 +24,16 @@ test("keeps script tags in the given order so shared globals are defined before 
   assert.ok(html.indexOf("dom.js") < html.indexOf("app.js"));
 });
 
-test("CSP restricts style-src and img-src to the given cspSource", () => {
+test("CSP restricts style-src, img-src, and font-src to the given cspSource", () => {
   const html = renderChatHtml(OPTIONS);
   assert.ok(html.includes("style-src vscode-webview://abc;"));
   assert.ok(html.includes("img-src vscode-webview://abc data:;"));
+  assert.ok(html.includes("font-src vscode-webview://abc;"));
+});
+
+test("wires the codicon stylesheet", () => {
+  const html = renderChatHtml(OPTIONS);
+  assert.ok(html.includes('href="vscode-webview://abc/codicon/codicon.css"'));
 });
 
 test("includes the elements main.js expects to find by id", () => {
