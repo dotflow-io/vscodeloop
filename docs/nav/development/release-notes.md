@@ -12,6 +12,7 @@
 
 ## v0.3.3
 
+- [📦 Marketplace - Build 0.3.3](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
 - [🪲 Bug: Fix RpcClient pending requests leak (#1)](https://github.com/dotflow-io/vscodeloop/pull/13)
 - [🪲 Bug: Fix settings not persisting in single-file mode (#2)](https://github.com/dotflow-io/vscodeloop/pull/14)
 - [🪲 Bug: Fix image attachments always sent as image/png (#3)](https://github.com/dotflow-io/vscodeloop/pull/15)
@@ -20,12 +21,14 @@
 
 ## v0.3.2
 
+- [📦 Marketplace - Build 0.3.2](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
 - 📘 MkDocs Material documentation site added (`docs/`, `mkdocs.yml`) — Concepts (architecture, settings), How-to guides (install, quick start, provider gallery, sessions, delegation, MCP servers, troubleshooting), Development Guide, and reference tables for settings/commands/RPC protocol
 - ⬆️ CI/CD — `code-quality.yml` (ESLint + `tsc --noEmit`) and `test.yml` (`npm test`) run on every PR; `marketplace-publish.yml` bumps `package.json`/`package-lock.json` from the release tag, runs tests + quality, packages the `.vsix`, and publishes to the VS Code Marketplace via `vsce publish` (`--pre-release` for prereleases) on `release: published`
 - 🪲 `.vscodeignore` wasn't excluding `test/`, `docs/`, `.github/`, or a stray local `.venv/` — the packaged `.vsix` was 17,751 files / 37MB; now 61 files / 324KB
 
 ## v0.3.1
 
+- [📦 Marketplace - Build 0.3.1](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
 - ⚙️ New-session icon and a dedicated Sessions page (toolbar button, replacing the native quickpick) — cards show message count, working directory, last-updated time, and an Active badge
 - ⚙️ Claude Code-style status line ("● Thinking… · 12s") with a live elapsed-time counter, switching to "N sub-agents working…" while parallel `delegate` calls are in flight
 - ⚙️ Memory wired into the extension (`pycodeloop.memory` setting, `/memory` slash command); completed `write_file`/`edit_file`/`delete_file` tool cards now render the diff computed for the confirmation prompt instead of a bare "Edited path" string
@@ -43,6 +46,7 @@
 
 ## v0.3.0
 
+- [📦 Marketplace - Build 0.3.0](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
 - ⚙️ Provider gallery (⚙ → Select Provider…, or `/provider`) replaces the flat quickpick — card picker for Anthropic/OpenAI/Gemini/Grok/Groq/Ollama/LM Studio with a connected/local/needs-key status per card, plus a custom-JSON/generic-URL fallback. API keys are remembered per provider, so switching back doesn't re-prompt
 - 🎨 Panel visual style reworked — thin borders, sharp corners, monospace labels — while staying on VS Code's own theme tokens
 
