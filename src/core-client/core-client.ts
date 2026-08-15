@@ -4,14 +4,28 @@ import { RpcMessage, decodeRpcMessage, encodeRpcMessage } from "./protocol";
 
 export { RpcMessage } from "./protocol";
 
+/** What RpcClient needs from a child process — satisfied by CoreProcess,
+ * and by a lightweight fake in tests so they don't have to spawn a real
+ * process (which keeps the test runner alive until it fully exits). */
+export interface ProcessHandle extends EventEmitter {
+  write(data: string): void;
+  kill(): void;
+}
+
 export class RpcClient extends EventEmitter {
-  private process: CoreProcess;
+  private process: ProcessHandle;
   private nextId = 1;
   private pending = new Map<string, (message: RpcMessage) => void>();
 
-  constructor(command: string, args: string[], cwd: string, env?: Record<string, string>) {
+  constructor(
+    command: string,
+    args: string[],
+    cwd: string,
+    env?: Record<string, string>,
+    process: ProcessHandle = new CoreProcess(command, args, cwd, env)
+  ) {
     super();
-    this.process = new CoreProcess(command, args, cwd, env);
+    this.process = process;
 
     this.process.on("line", (line: string) => {
       const message = decodeRpcMessage(line);
