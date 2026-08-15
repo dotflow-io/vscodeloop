@@ -413,27 +413,32 @@ body {
 }
 
 .tool-card-header .tool-status {
+  display: inline-flex;
+  align-items: center;
   margin-left: auto;
-  font-size: 14px;
-  line-height: 1;
   flex-shrink: 0;
 }
 
-.tool-status.pending {
+.tool-card-header .tool-status-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.tool-status.pending .tool-status-icon {
   color: var(--vscode-focusBorder);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tool-status.pending.codicon-modifier-spin {
+  .tool-status-icon.codicon-modifier-spin {
     animation: none;
   }
 }
 
-.tool-status.ok {
+.tool-status.ok .tool-status-icon {
   color: var(--vscode-charts-green, var(--vscode-testing-iconPassed, #2ea043));
 }
 
-.tool-status.error {
+.tool-status.error .tool-status-icon {
   color: var(--vscode-errorForeground);
 }
 

@@ -67,7 +67,10 @@ function renderToolCall(name, args) {
   }
 
   const status = document.createElement("span");
-  status.className = "tool-status pending codicon codicon-loading codicon-modifier-spin";
+  status.className = "tool-status pending";
+  const statusIcon = document.createElement("span");
+  statusIcon.className = "tool-status-icon codicon codicon-loading codicon-modifier-spin";
+  status.appendChild(statusIcon);
 
   header.appendChild(status);
   header.addEventListener("click", () => card.classList.toggle("expanded"));
@@ -89,6 +92,7 @@ function renderToolCall(name, args) {
   scrollToBottom();
 
   card.__status = status;
+  card.__statusIcon = statusIcon;
   card.__body = body;
   card.__diffPreview = null;
 
@@ -107,8 +111,9 @@ function resolveToolResult(name, result, isError) {
     return;
   }
 
-  card.__status.className =
-    "tool-status codicon " + (isError ? "error codicon-close" : "ok codicon-check");
+  card.__status.className = "tool-status " + (isError ? "error" : "ok");
+  card.__statusIcon.className =
+    "tool-status-icon codicon " + (isError ? "codicon-close" : "codicon-check");
 
   if (card.__diffPreview && !isError) {
     const { el, adds, removes } = renderDiffBlock(card.__diffPreview);
@@ -160,7 +165,8 @@ function renderHistory(messages) {
       if (!card) {
         continue;
       }
-      card.__status.className = "tool-status ok codicon codicon-check";
+      card.__status.className = "tool-status ok";
+      card.__statusIcon.className = "tool-status-icon codicon codicon-check";
       const resultLabel = document.createElement("div");
       resultLabel.className = "section-label";
       resultLabel.textContent = "Result";
