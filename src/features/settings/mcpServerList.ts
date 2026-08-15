@@ -22,5 +22,6 @@ export function addServer(servers: string[], server: string): string[] {
 }
 
 export function removeServer(servers: string[], server: string): string[] {
-  return servers.filter((s) => s !== server);
+  const trimmed = server.trim();
+  return servers.filter((s) => s.trim() !== trimmed);
 }
