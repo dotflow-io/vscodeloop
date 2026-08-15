@@ -175,10 +175,16 @@ export class ChatController {
       this.post({ type: "stderr", text });
     });
     client.on("exit", ({ code }: { code: number | null }) => {
+      if (this.client !== client) {
+        return;
+      }
       this.post({ type: "processExit", code });
       this.client = undefined;
     });
     client.on("spawnError", (error: NodeJS.ErrnoException) => {
+      if (this.client !== client) {
+        return;
+      }
       if (error.code === "ENOENT") {
         this.post({ type: "cliMissing", command });
       } else {
