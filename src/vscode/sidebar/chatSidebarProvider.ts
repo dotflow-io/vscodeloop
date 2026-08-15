@@ -55,6 +55,10 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
     this.chat.startConnection();
   }
 
+  dispose(): void {
+    this.chat.dispose();
+  }
+
   newSession(): void {
     this.sessions.newSession();
   }
