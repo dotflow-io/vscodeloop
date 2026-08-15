@@ -28,6 +28,20 @@ test("addServer appends without mutating the input", () => {
   assert.deepEqual(original, ["a"]);
 });
 
+test("addServer is a no-op when the trimmed command already exists", () => {
+  assert.deepEqual(addServer(["npx -y foo"], "npx -y foo"), ["npx -y foo"]);
+  assert.deepEqual(addServer(["npx -y foo"], "  npx -y foo  "), ["npx -y foo"]);
+});
+
+test("addServer trims whitespace before appending a new command", () => {
+  assert.deepEqual(addServer(["a"], "  b  "), ["a", "b"]);
+});
+
+test("addServer rejects a blank or whitespace-only command", () => {
+  assert.deepEqual(addServer(["a"], ""), ["a"]);
+  assert.deepEqual(addServer(["a"], "   "), ["a"]);
+});
+
 test("removeServer drops a matching entry without mutating the input", () => {
   const original = ["a", "b", "c"];
   const next = removeServer(original, "b");
