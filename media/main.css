@@ -408,7 +408,7 @@ body {
   cursor: pointer;
 }
 
-.tool-open-file:hover {
+.tool-card-header .tool-open-file:hover {
   color: var(--vscode-foreground);
 }
 
