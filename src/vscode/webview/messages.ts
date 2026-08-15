@@ -22,4 +22,5 @@ export type WebviewMessage =
   | { type: "reload" }
   | { type: "installCli" }
   | { type: "updateCli" }
-  | { type: "openSettings" };
+  | { type: "openSettings" }
+  | { type: "openFile"; path: string };
