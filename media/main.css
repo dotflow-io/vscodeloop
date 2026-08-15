@@ -373,8 +373,10 @@ body {
 
 .tool-icon {
   width: 14px;
+  font-size: 14px;
   text-align: center;
   flex-shrink: 0;
+  color: var(--vscode-descriptionForeground);
 }
 
 .tool-name {
@@ -393,9 +395,23 @@ body {
   min-width: 0;
 }
 
+.tool-open-file {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--vscode-descriptionForeground);
+  font-size: 13px;
+  padding: 0 2px;
+  cursor: pointer;
+}
+
+.tool-open-file:hover {
+  color: var(--vscode-foreground);
+}
+
 .tool-status {
   margin-left: auto;
-  font-size: 0.9em;
+  font-size: 14px;
   flex-shrink: 0;
 }
 
@@ -862,7 +878,7 @@ body {
   height: 16px;
   line-height: 16px;
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;
   padding: 0;
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
