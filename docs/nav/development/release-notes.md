@@ -3,7 +3,7 @@
 ## v0.4.1
 
 - [📦 Marketplace - Build 0.4.1](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
-- [🪲 Bug: Honor the active editor's folder in multi-root workspaces (#25)](https://github.com/dotflow-io/vscodeloop/pull/25)
+- [🪲 Bug: Honor the active editor's folder in multi-root workspaces (#26)](https://github.com/dotflow-io/vscodeloop/pull/27)
 
 ## v0.4.0
 
