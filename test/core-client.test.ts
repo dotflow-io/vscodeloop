@@ -58,3 +58,29 @@ test("a real RPC response still resolves normally, not through rejectPending", a
   const response = await pending;
   assert.deepEqual(response.result, { text: "ok" });
 });
+
+test("a re-entrant request made from inside a rejected .then() is not silently dropped", async () => {
+  const fake = new FakeProcess();
+  const client = new RpcClient("fake", [], process.cwd(), undefined, fake);
+
+  const retryResponse = client.request("chat/send", { prompt: "first" }).then((first) => {
+    assert.equal(first.error?.code, -32000);
+    return client.request("chat/send", { prompt: "retry" });
+  });
+  fake.emit("exit", { code: 1, signal: null });
+
+  const response = await retryResponse;
+  assert.equal(response.error?.code, -32000);
+  assert.equal(response.error?.message, "RpcClient is disposed");
+});
+
+test("requests made after the process has already exited reject immediately instead of hanging", async () => {
+  const fake = new FakeProcess();
+  const client = new RpcClient("fake", [], process.cwd(), undefined, fake);
+
+  fake.emit("exit", { code: 1, signal: null });
+  const response = await client.request("diagnostics/status");
+
+  assert.equal(response.error?.code, -32000);
+  assert.equal(response.error?.message, "RpcClient is disposed");
+});

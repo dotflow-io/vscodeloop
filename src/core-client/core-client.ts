@@ -16,6 +16,7 @@ export class RpcClient extends EventEmitter {
   private process: ProcessHandle;
   private nextId = 1;
   private pending = new Map<string, (message: RpcMessage) => void>();
+  private dead = false;
 
   constructor(
     command: string,
@@ -45,10 +46,12 @@ export class RpcClient extends EventEmitter {
   }
 
   private rejectPending(message: string): void {
-    for (const [id, resolve] of this.pending) {
+    this.dead = true;
+    const snapshot = new Map(this.pending);
+    this.pending.clear();
+    for (const [id, resolve] of snapshot) {
       resolve({ jsonrpc: "2.0", id, error: { code: -32000, message } });
     }
-    this.pending.clear();
   }
 
   private dispatch(message: RpcMessage): void {
@@ -71,6 +74,13 @@ export class RpcClient extends EventEmitter {
 
   request(method: string, params: Record<string, unknown> = {}): Promise<RpcMessage> {
     const id = String(this.nextId++);
+    if (this.dead) {
+      return Promise.resolve({
+        jsonrpc: "2.0",
+        id,
+        error: { code: -32000, message: "RpcClient is disposed" },
+      });
+    }
     return new Promise((resolve) => {
       this.pending.set(id, resolve);
       this.process.write(encodeRpcMessage({ jsonrpc: "2.0", id, method, params }));
