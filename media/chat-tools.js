@@ -1,21 +1,23 @@
 const TOOL_ICONS = {
-  read_file: "📄",
-  write_file: "📝",
-  edit_file: "✏️",
-  delete_file: "🗑",
-  list_dir: "📁",
-  grep: "🔍",
-  glob: "🔍",
-  bash: "❯_",
-  http_request: "🌐",
-  web_fetch: "🌐",
-  todo: "☑",
-  delegate: "🤖",
+  read_file: "file-text",
+  write_file: "new-file",
+  edit_file: "edit",
+  delete_file: "trash",
+  list_dir: "folder",
+  grep: "search",
+  glob: "search",
+  bash: "terminal",
+  http_request: "globe",
+  web_fetch: "globe",
+  todo: "checklist",
+  delegate: "type-hierarchy-sub",
 };
 
 function toolIcon(name) {
-  return TOOL_ICONS[name] || "🔧";
+  return TOOL_ICONS[name] || "tools";
 }
+
+const FILE_TOOLS = new Set(["read_file", "write_file", "edit_file", "delete_file"]);
 
 function argsPreview(args) {
   try {
@@ -39,8 +41,7 @@ function renderToolCall(name, args) {
   header.className = "tool-card-header";
 
   const icon = document.createElement("span");
-  icon.className = "tool-icon";
-  icon.textContent = toolIcon(name);
+  icon.className = "tool-icon codicon codicon-" + toolIcon(name);
 
   const nameEl = document.createElement("span");
   nameEl.className = "tool-name";
@@ -50,13 +51,27 @@ function renderToolCall(name, args) {
   preview.className = "tool-args-preview";
   preview.textContent = argsPreview(args);
 
-  const status = document.createElement("span");
-  status.className = "tool-status pending";
-  status.textContent = "●";
-
   header.appendChild(icon);
   header.appendChild(nameEl);
   header.appendChild(preview);
+
+  if (args && typeof args.path === "string" && FILE_TOOLS.has(name)) {
+    const openFile = document.createElement("button");
+    openFile.className = "tool-open-file codicon codicon-go-to-file";
+    openFile.title = "Open " + args.path;
+    openFile.addEventListener("click", (event) => {
+      event.stopPropagation();
+      vscode.postMessage({ type: "openFile", path: args.path });
+    });
+    header.appendChild(openFile);
+  }
+
+  const status = document.createElement("span");
+  status.className = "tool-status pending";
+  const statusIcon = document.createElement("span");
+  statusIcon.className = "tool-status-icon codicon codicon-loading codicon-modifier-spin";
+  status.appendChild(statusIcon);
+
   header.appendChild(status);
   header.addEventListener("click", () => card.classList.toggle("expanded"));
 
@@ -77,6 +92,7 @@ function renderToolCall(name, args) {
   scrollToBottom();
 
   card.__status = status;
+  card.__statusIcon = statusIcon;
   card.__body = body;
   card.__diffPreview = null;
 
@@ -95,8 +111,9 @@ function resolveToolResult(name, result, isError) {
     return;
   }
 
-  card.__status.textContent = isError ? "✗" : "✓";
   card.__status.className = "tool-status " + (isError ? "error" : "ok");
+  card.__statusIcon.className =
+    "tool-status-icon codicon " + (isError ? "codicon-close" : "codicon-check");
 
   if (card.__diffPreview && !isError) {
     const { el, adds, removes } = renderDiffBlock(card.__diffPreview);
@@ -148,8 +165,8 @@ function renderHistory(messages) {
       if (!card) {
         continue;
       }
-      card.__status.textContent = "✓";
       card.__status.className = "tool-status ok";
+      card.__statusIcon.className = "tool-status-icon codicon codicon-check";
       const resultLabel = document.createElement("div");
       resultLabel.className = "section-label";
       resultLabel.textContent = "Result";
@@ -164,7 +181,7 @@ function renderHistory(messages) {
   scrollToBottom();
 }
 
-function markToolAutoApproved(name) {
+function markToolAutoApproved(name, preview) {
   const queue = pendingToolCards.get(name);
   const card = queue && queue[0];
   if (!card) {
@@ -172,6 +189,9 @@ function markToolAutoApproved(name) {
   }
   card.__status.title = "auto-approved";
   card.__status.classList.add("auto-approved");
+  if (DIFF_TOOLS.has(name) && preview) {
+    card.__diffPreview = preview;
+  }
 }
 
 function setBusy(busy) {

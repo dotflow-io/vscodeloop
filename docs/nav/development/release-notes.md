@@ -1,5 +1,10 @@
 # Release Notes
 
+## v0.4.0
+
+- [📦 Marketplace - Build 0.4.0](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
+- [⚙️ Feature: Replace tool-card emoji with codicons, go-to-file, and auto-approved diffs (#21)](https://github.com/dotflow-io/vscodeloop/pull/22)
+
 ## v0.3.5
 
 - [📦 Marketplace - Build 0.3.5](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
@@ -7,7 +12,6 @@
 
 ## v0.3.4
 
-- [📦 Marketplace - Build 0.3.4](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
 - [🪲 Bug: Fix messages blending together across tool calls (#18)](https://github.com/dotflow-io/vscodeloop/pull/18)
 
 ## v0.3.3

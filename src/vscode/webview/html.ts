@@ -2,11 +2,12 @@ export interface ChatHtmlOptions {
   cspSource: string;
   scriptUris: string[];
   styleUri: string;
+  codiconUri: string;
   nonce: string;
 }
 
 export function renderChatHtml(options: ChatHtmlOptions): string {
-  const { cspSource, scriptUris, styleUri, nonce } = options;
+  const { cspSource, scriptUris, styleUri, codiconUri, nonce } = options;
   const scriptTags = scriptUris
     .map((uri) => `  <script nonce="${nonce}" src="${uri}"></script>`)
     .join("\n");
@@ -15,8 +16,9 @@ export function renderChatHtml(options: ChatHtmlOptions): string {
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspSource}; script-src 'nonce-${nonce}'; img-src ${cspSource} data:;" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${cspSource}; script-src 'nonce-${nonce}'; img-src ${cspSource} data:; font-src ${cspSource};" />
   <link rel="stylesheet" href="${styleUri}" />
+  <link rel="stylesheet" href="${codiconUri}" />
   <title>CodeLoop</title>
 </head>
 <body>

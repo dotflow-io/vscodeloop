@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import * as crypto from "crypto";
+import * as path from "path";
 import { resolveWorkspacePath } from "../../services/workspace.service";
 import { currentWorkspaceFolder } from "../../services/settings.service";
 import { ChatController } from "../../features/chat/chat.controller";
@@ -149,7 +150,26 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
       case "openSettings":
         vscode.commands.executeCommand("workbench.action.openSettings", "pycodeloop");
         break;
+      case "openFile":
+        if (typeof message.path === "string" && message.path.length > 0) {
+          this.openFile(message.path);
+        }
+        break;
     }
+  }
+
+  private openFile(filePath: string): void {
+    const root = currentWorkspaceFolder();
+    const resolved = path.isAbsolute(filePath) ? filePath : path.join(root, filePath);
+    const normalized = path.normalize(resolved);
+    if (!normalized.startsWith(path.normalize(root) + path.sep)) {
+      vscode.window.showErrorMessage(`Path outside workspace: ${filePath}`);
+      return;
+    }
+    const uri = vscode.Uri.file(normalized);
+    vscode.window.showTextDocument(uri).then(undefined, () => {
+      vscode.window.showErrorMessage(`Couldn't open ${filePath}`);
+    });
   }
 
   private post(message: { type: string } & Record<string, unknown>): void {
@@ -173,11 +193,15 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
       webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, "media", file)).toString()
     );
     const styleUri = webview.asWebviewUri(vscode.Uri.joinPath(this.context.extensionUri, "media", "main.css"));
+    const codiconUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this.context.extensionUri, "media", "codicon", "codicon.css")
+    );
 
     return renderChatHtml({
       cspSource: webview.cspSource,
       scriptUris,
       styleUri: styleUri.toString(),
+      codiconUri: codiconUri.toString(),
       nonce: crypto.randomBytes(16).toString("hex"),
     });
   }

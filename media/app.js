@@ -48,7 +48,7 @@ window.addEventListener("message", (event) => {
       resolveToolResult(message.name, message.result, message.isError);
       break;
     case "autoApproved":
-      markToolAutoApproved(message.name);
+      markToolAutoApproved(message.name, message.preview);
       break;
     case "confirmRequest":
       renderConfirmRequest(message);

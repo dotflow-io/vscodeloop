@@ -15,8 +15,7 @@ function renderAttachmentsPreview() {
     const img = document.createElement("img");
     img.src = dataUrl;
     const remove = document.createElement("button");
-    remove.className = "remove";
-    remove.textContent = "✕";
+    remove.className = "remove codicon codicon-close";
     remove.title = "Remove";
     remove.addEventListener("click", () => {
       pendingImages.splice(index, 1);
