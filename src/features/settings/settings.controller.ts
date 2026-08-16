@@ -5,7 +5,7 @@ import { API_KEY_SECRET, providerKeySecret } from "../../services/credentials.se
 import { PostMessage, ResolveSetting } from "../chat/chat.types";
 import { PROVIDER_CATALOG, findProviderDef } from "./providerCatalog";
 import { ADD_MCP_SERVER_LABEL, addServer, parseServerLabel, removeServer, toQuickPickLabels } from "./mcpServerList";
-import { saveMcpServer, splitCommand } from "../../services/mcpRegistry.service";
+import { McpServerNameTakenError, saveMcpServer, splitCommand } from "../../services/mcpRegistry.service";
 
 export class SettingsController {
   constructor(
@@ -362,7 +362,38 @@ export class SettingsController {
       return command;
     }
 
-    saveMcpServer(name, { command: cmd, args });
+    let overwrite = false;
+    try {
+      await saveMcpServer(name, { command: cmd, args });
+    } catch (err) {
+      if (!(err instanceof McpServerNameTakenError)) {
+        vscode.window.showErrorMessage(
+          `Couldn't save "${name}" to the pycodeloop registry: ${(err as Error).message}`
+        );
+        return command;
+      }
+      const action = await vscode.window.showWarningMessage(
+        `"${name}" already exists in the pycodeloop registry. Overwrite it?`,
+        "Overwrite",
+        "Cancel"
+      );
+      if (action !== "Overwrite") {
+        return command;
+      }
+      overwrite = true;
+    }
+
+    if (overwrite) {
+      try {
+        await saveMcpServer(name, { command: cmd, args }, { overwrite: true });
+      } catch (err) {
+        vscode.window.showErrorMessage(
+          `Couldn't save "${name}" to the pycodeloop registry: ${(err as Error).message}`
+        );
+        return command;
+      }
+    }
+
     return `saved:${name}`;
   }
 
