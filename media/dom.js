@@ -36,6 +36,7 @@ const menuMemoryCheck = document.getElementById("menu-memory-check");
 const menuWorkspace = document.getElementById("menu-workspace");
 const menuWorkspaceCheck = document.getElementById("menu-workspace-check");
 const menuMcp = document.getElementById("menu-mcp");
+const menuReloadSkills = document.getElementById("menu-reload-skills");
 const menuReload = document.getElementById("menu-reload");
 const menuSettings = document.getElementById("menu-settings");
 const statusDot = document.getElementById("status-dot");

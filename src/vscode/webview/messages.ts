@@ -21,6 +21,7 @@ export type WebviewMessage =
   | { type: "toggleWorkspace"; next: boolean }
   | { type: "manageMcpServers" }
   | { type: "reload" }
+  | { type: "reloadSkills" }
   | { type: "installCli" }
   | { type: "updateCli" }
   | { type: "openSettings" }

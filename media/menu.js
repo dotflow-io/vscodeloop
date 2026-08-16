@@ -26,6 +26,7 @@ onMenuClick(menuDelegation, () => vscode.postMessage({ type: "toggleDelegation",
 onMenuClick(menuMemory, () => vscode.postMessage({ type: "toggleMemory", next: !memoryEnabled }));
 onMenuClick(menuWorkspace, () => vscode.postMessage({ type: "toggleWorkspace", next: !workspaceEnabled }));
 onMenuClick(menuMcp, () => vscode.postMessage({ type: "manageMcpServers" }));
+onMenuClick(menuReloadSkills, () => vscode.postMessage({ type: "reloadSkills" }));
 onMenuClick(menuReload, () => vscode.postMessage({ type: "reload" }));
 onMenuClick(menuSettings, () => vscode.postMessage({ type: "openSettings" }));
 
