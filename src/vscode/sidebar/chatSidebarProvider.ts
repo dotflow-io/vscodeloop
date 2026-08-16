@@ -141,6 +141,9 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
       case "reload":
         this.chat.reload();
         break;
+      case "reloadSkills":
+        this.chat.reloadSkills();
+        break;
       case "installCli":
         this.chat.installCli();
         break;
