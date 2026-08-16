@@ -51,6 +51,7 @@ export function renderChatHtml(options: ChatHtmlOptions): string {
             <span id="menu-memory-check" class="check-box"></span> Project memory
           </button>
           <button id="menu-mcp" class="menu-item">MCP Servers</button>
+          <button id="menu-reload-skills" class="menu-item">Reload Skills</button>
           <button id="menu-reload" class="menu-item">Reload Connection</button>
           <button id="menu-settings" class="menu-item">Open Settings</button>
         </div>
