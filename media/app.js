@@ -79,9 +79,16 @@ window.addEventListener("message", (event) => {
     case "done": {
       let fallback = message.text;
       if (turnEndSeen) {
-        fallback = message.text.startsWith(renderedAssistantText)
-          ? message.text.slice(renderedAssistantText.length).trimStart()
-          : "";
+        if (message.text.startsWith(renderedAssistantText)) {
+          const remainder = message.text.slice(renderedAssistantText.length);
+          fallback = remainder.trim() ? remainder : "";
+        } else {
+          console.warn(
+            "[vscodeloop] done: text/renderedAssistantText mismatch — using full text as fallback",
+            { textLen: message.text.length, renderedLen: renderedAssistantText.length }
+          );
+          fallback = message.text;
+        }
       }
       finishAssistantTurn(fallback || undefined);
       turnEndSeen = false;
