@@ -24,7 +24,9 @@ onMenuClick(menuAutoApprove, () => vscode.postMessage({ type: "toggleAutoApprove
 onMenuClick(menuSkills, () => vscode.postMessage({ type: "toggleSkills", next: !skillsEnabled }));
 onMenuClick(menuDelegation, () => vscode.postMessage({ type: "toggleDelegation", next: !delegationEnabled }));
 onMenuClick(menuMemory, () => vscode.postMessage({ type: "toggleMemory", next: !memoryEnabled }));
+onMenuClick(menuWorkspace, () => vscode.postMessage({ type: "toggleWorkspace", next: !workspaceEnabled }));
 onMenuClick(menuMcp, () => vscode.postMessage({ type: "manageMcpServers" }));
+onMenuClick(menuReloadSkills, () => vscode.postMessage({ type: "reloadSkills" }));
 onMenuClick(menuReload, () => vscode.postMessage({ type: "reload" }));
 onMenuClick(menuSettings, () => vscode.postMessage({ type: "openSettings" }));
 
@@ -34,6 +36,7 @@ function applySettings(message) {
   skillsEnabled = message.skills !== false;
   delegationEnabled = !!message.delegation;
   memoryEnabled = message.memory !== false;
+  workspaceEnabled = message.workspace !== false;
   hasApiKey = !!message.hasApiKey;
   apiKeyEnv = message.apiKeyEnv || "";
   authHeader = message.authHeader || "";
@@ -42,6 +45,7 @@ function applySettings(message) {
   menuSkillsCheck.classList.toggle("checked", skillsEnabled);
   menuDelegationCheck.classList.toggle("checked", delegationEnabled);
   menuMemoryCheck.classList.toggle("checked", memoryEnabled);
+  menuWorkspaceCheck.classList.toggle("checked", workspaceEnabled);
   if (!hasApiKey && apiKeyEnv && !apiKeyCard && !apiKeyPromptHidden) {
     renderApiKeyCard();
   }

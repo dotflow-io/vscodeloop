@@ -76,11 +76,26 @@ window.addEventListener("message", (event) => {
     case "retry":
       addSystemNote("Retrying (" + message.attempt + "/3) — " + message.error, true);
       break;
-    case "done":
-      finishAssistantTurn(turnEndSeen ? undefined : message.text);
+    case "done": {
+      let fallback = message.text;
+      if (turnEndSeen) {
+        if (message.text.startsWith(renderedAssistantText)) {
+          const remainder = message.text.slice(renderedAssistantText.length);
+          fallback = remainder.trim() ? remainder : "";
+        } else {
+          console.warn(
+            "[vscodeloop] done: text/renderedAssistantText mismatch — using full text as fallback",
+            { textLen: message.text.length, renderedLen: renderedAssistantText.length }
+          );
+          fallback = message.text;
+        }
+      }
+      finishAssistantTurn(fallback || undefined);
       turnEndSeen = false;
+      renderedAssistantText = "";
       setBusy(false);
       break;
+    }
     case "error":
       finishAssistantTurn();
       addErrorNote(message.message);

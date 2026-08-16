@@ -8,6 +8,7 @@ export interface ServeArgsOptions {
   workspace: boolean;
   autoApprove: boolean;
   mcpServers: string[];
+  skillsRefresh?: boolean;
   resolveSetting: (value: string) => string;
 }
 
@@ -25,6 +26,9 @@ export function buildServeArgs(options: ServeArgsOptions): string[] {
   }
   if (!options.skills) {
     args.push("--no-skills");
+  }
+  if (options.skillsRefresh) {
+    args.push("--skills-refresh");
   }
   if (options.delegation) {
     args.push("--delegate");

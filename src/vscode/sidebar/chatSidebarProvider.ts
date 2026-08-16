@@ -135,11 +135,17 @@ export class ChatViewProvider implements vscode.WebviewViewProvider {
       case "toggleMemory":
         this.settings.toggleMemory(!!message.next);
         break;
+      case "toggleWorkspace":
+        this.settings.toggleWorkspace(!!message.next);
+        break;
       case "manageMcpServers":
         this.settings.manageMcpServers();
         break;
       case "reload":
         this.chat.reload();
+        break;
+      case "reloadSkills":
+        this.chat.reloadSkills();
         break;
       case "installCli":
         this.chat.installCli();

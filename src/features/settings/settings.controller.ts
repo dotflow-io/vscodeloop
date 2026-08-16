@@ -32,6 +32,7 @@ export class SettingsController {
       skills: settings.skills,
       delegation: settings.delegation,
       memory: settings.memory,
+      workspace: settings.workspace,
       mcpServers: settings.mcpServers,
       hasApiKey: Boolean(apiKey),
       apiKeyEnv: auth.apiKeyEnv,
@@ -69,13 +70,13 @@ export class SettingsController {
 
   private storedModelFor(def: (typeof PROVIDER_CATALOG)[number]): string {
     const stored = this.context.globalState.get<string>(this.providerModelKey(def.id));
-    return stored && def.models.includes(stored) ? stored : def.defaultModel;
+    return stored || def.defaultModel;
   }
 
   private async healStaleModel(): Promise<void> {
     const settings = readSettings();
     const def = findProviderDef(this.activeProviderId(settings.provider));
-    if (!def || !settings.model || def.models.includes(settings.model)) {
+    if (!def || settings.model) {
       return;
     }
     await updateSetting("model", def.defaultModel);
@@ -395,6 +396,12 @@ export class SettingsController {
     }
 
     return `saved:${name}`;
+  }
+
+  async toggleWorkspace(next: boolean): Promise<void> {
+    await updateSetting("workspace", next);
+    await this.postSettings();
+    this.reload();
   }
 
   async manageMcpServers(): Promise<void> {

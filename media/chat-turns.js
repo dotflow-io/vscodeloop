@@ -244,6 +244,9 @@ function finishAssistantTurn(fallbackText) {
   } else if (!assistantTurn.rawText.trim()) {
     assistantTurn.turnEl.remove();
   }
+  if (assistantTurn && assistantTurn.rawText) {
+    renderedAssistantText += assistantTurn.rawText;
+  }
   assistantTurn = null;
 }
 
