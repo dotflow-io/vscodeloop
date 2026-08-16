@@ -11,17 +11,23 @@ export interface SavedMcpServer {
   env?: Record<string, string>;
 }
 
-function readConfig(): Record<string, unknown> {
+export class McpServerNameTakenError extends Error {
+  constructor(readonly name: string) {
+    super(`A server named "${name}" already exists in the registry.`);
+  }
+}
+
+async function readConfig(): Promise<Record<string, unknown>> {
   try {
-    return JSON.parse(fs.readFileSync(CONFIG_PATH, "utf8"));
+    return JSON.parse(await fs.promises.readFile(CONFIG_PATH, "utf8"));
   } catch {
     return {};
   }
 }
 
-function writeConfig(data: Record<string, unknown>): void {
-  fs.mkdirSync(path.dirname(CONFIG_PATH), { recursive: true });
-  fs.writeFileSync(CONFIG_PATH, JSON.stringify(data, null, 2));
+async function writeConfig(data: Record<string, unknown>): Promise<void> {
+  await fs.promises.mkdir(path.dirname(CONFIG_PATH), { recursive: true });
+  await fs.promises.writeFile(CONFIG_PATH, JSON.stringify(data, null, 2));
 }
 
 // Mirrors shlex.split() on the pycodeloop side (cli/flow.py's _load_mcp_tools).
@@ -36,23 +42,30 @@ export function splitCommand(command: string): { command: string; args: string[]
   return { command: head ?? "", args: rest };
 }
 
-export function listSavedMcpServers(): Record<string, SavedMcpServer> {
-  const data = readConfig();
+export async function listSavedMcpServers(): Promise<Record<string, SavedMcpServer>> {
+  const data = await readConfig();
   return (data[SECTION] as Record<string, SavedMcpServer>) ?? {};
 }
 
-export function saveMcpServer(name: string, server: SavedMcpServer): void {
-  const data = readConfig();
+export async function saveMcpServer(
+  name: string,
+  server: SavedMcpServer,
+  { overwrite = false }: { overwrite?: boolean } = {}
+): Promise<void> {
+  const data = await readConfig();
   const servers = (data[SECTION] as Record<string, SavedMcpServer>) ?? {};
+  if (servers[name] && !overwrite) {
+    throw new McpServerNameTakenError(name);
+  }
   servers[name] = server;
   data[SECTION] = servers;
-  writeConfig(data);
+  await writeConfig(data);
 }
 
-export function deleteSavedMcpServer(name: string): void {
-  const data = readConfig();
+export async function deleteSavedMcpServer(name: string): Promise<void> {
+  const data = await readConfig();
   const servers = (data[SECTION] as Record<string, SavedMcpServer>) ?? {};
   delete servers[name];
   data[SECTION] = servers;
-  writeConfig(data);
+  await writeConfig(data);
 }
