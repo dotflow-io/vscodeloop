@@ -66,6 +66,7 @@ function send() {
   renderAttachmentsPreview();
   assistantTurn = null;
   turnEndSeen = false;
+  renderedAssistantText = "";
   setBusy(true);
   showThinkingIndicator();
   vscode.postMessage({ type: "sendPrompt", prompt, images });
