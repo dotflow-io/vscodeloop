@@ -31,6 +31,7 @@ export class SettingsController {
       skills: settings.skills,
       delegation: settings.delegation,
       memory: settings.memory,
+      workspace: settings.workspace,
       mcpServers: settings.mcpServers,
       hasApiKey: Boolean(apiKey),
       apiKeyEnv: auth.apiKeyEnv,
@@ -338,6 +339,12 @@ export class SettingsController {
 
   async toggleMemory(next: boolean): Promise<void> {
     await updateSetting("memory", next);
+    await this.postSettings();
+    this.reload();
+  }
+
+  async toggleWorkspace(next: boolean): Promise<void> {
+    await updateSetting("workspace", next);
     await this.postSettings();
     this.reload();
   }

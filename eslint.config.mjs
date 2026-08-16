@@ -86,6 +86,8 @@ export default tseslint.config(
         menuSkills: "writable",
         menuSkillsCheck: "writable",
         menuToggle: "writable",
+        menuWorkspace: "writable",
+        menuWorkspaceCheck: "writable",
         messagesEl: "writable",
         newSessionButton: "writable",
         onMenuClick: "writable",
@@ -145,6 +147,7 @@ export default tseslint.config(
         turnEndSeen: "writable",
         updateCommandMenu: "writable",
         vscode: "writable",
+        workspaceEnabled: "writable",
       },
     },
     rules: {

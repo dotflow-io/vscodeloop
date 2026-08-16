@@ -18,6 +18,7 @@ export type WebviewMessage =
   | { type: "toggleSkills"; next: boolean }
   | { type: "toggleDelegation"; next: boolean }
   | { type: "toggleMemory"; next: boolean }
+  | { type: "toggleWorkspace"; next: boolean }
   | { type: "manageMcpServers" }
   | { type: "reload" }
   | { type: "installCli" }
