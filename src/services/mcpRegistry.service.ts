@@ -24,10 +24,7 @@ function writeConfig(data: Record<string, unknown>): void {
   fs.writeFileSync(CONFIG_PATH, JSON.stringify(data, null, 2));
 }
 
-/** Split a shell-style command string into `command`/`args`, mirroring
- * `shlex.split()` on the pycodeloop side (`cli/flow.py`'s `_load_mcp_tools`)
- * closely enough for the common case: whitespace-separated tokens with
- * optional single/double-quoted segments. */
+// Mirrors shlex.split() on the pycodeloop side (cli/flow.py's _load_mcp_tools).
 export function splitCommand(command: string): { command: string; args: string[] } {
   const tokens = command.match(/"[^"]*"|'[^']*'|\S+/g) ?? [];
   const unquoted = tokens.map((t) =>
@@ -39,10 +36,6 @@ export function splitCommand(command: string): { command: string; args: string[]
   return { command: head ?? "", args: rest };
 }
 
-/** Named MCP server configs from `~/.pycodeloop/config.json`'s
- * `"mcp_servers"` section — the same store `MCPServerRegistry` (pycodeloop)
- * reads/writes, so a server saved here is usable as `--mcp saved:<name>`
- * from both the extension and the CLI. */
 export function listSavedMcpServers(): Record<string, SavedMcpServer> {
   const data = readConfig();
   return (data[SECTION] as Record<string, SavedMcpServer>) ?? {};

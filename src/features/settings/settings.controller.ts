@@ -343,12 +343,6 @@ export class SettingsController {
     this.reload();
   }
 
-  /** Offers to save a newly-typed MCP launch command into pycodeloop's
-   * native `saved:<name>` registry (`~/.pycodeloop/config.json`) instead
-   * of keeping only the raw command in VS Code settings — so the same
-   * server is usable from the CLI (`--mcp saved:<name>`) too. Returns
-   * the entry to store in `pycodeloop.mcpServers`: `saved:<name>` if the
-   * user opted in, otherwise the raw command unchanged. */
   private async maybeSaveToRegistry(command: string): Promise<string> {
     const choice = await vscode.window.showQuickPick(["Just this workspace", "Save for reuse in the CLI too"], {
       title: "Save this MCP server for pycodeloop CLI reuse?",
