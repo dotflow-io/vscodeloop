@@ -76,11 +76,19 @@ window.addEventListener("message", (event) => {
     case "retry":
       addSystemNote("Retrying (" + message.attempt + "/3) — " + message.error, true);
       break;
-    case "done":
-      finishAssistantTurn(turnEndSeen ? undefined : message.text);
+    case "done": {
+      let fallback = message.text;
+      if (turnEndSeen) {
+        fallback = message.text.startsWith(renderedAssistantText)
+          ? message.text.slice(renderedAssistantText.length).trimStart()
+          : "";
+      }
+      finishAssistantTurn(fallback || undefined);
       turnEndSeen = false;
+      renderedAssistantText = "";
       setBusy(false);
       break;
+    }
     case "error":
       finishAssistantTurn();
       addErrorNote(message.message);
