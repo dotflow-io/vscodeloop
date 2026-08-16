@@ -5,6 +5,7 @@ import { API_KEY_SECRET, providerKeySecret } from "../../services/credentials.se
 import { PostMessage, ResolveSetting } from "../chat/chat.types";
 import { PROVIDER_CATALOG, findProviderDef } from "./providerCatalog";
 import { ADD_MCP_SERVER_LABEL, addServer, parseServerLabel, removeServer, toQuickPickLabels } from "./mcpServerList";
+import { McpServerNameTakenError, saveMcpServer, splitCommand } from "../../services/mcpRegistry.service";
 
 export class SettingsController {
   constructor(
@@ -343,6 +344,60 @@ export class SettingsController {
     this.reload();
   }
 
+  private async maybeSaveToRegistry(command: string): Promise<string> {
+    const choice = await vscode.window.showQuickPick(["Just this workspace", "Save for reuse in the CLI too"], {
+      title: "Save this MCP server for pycodeloop CLI reuse?",
+    });
+    if (choice !== "Save for reuse in the CLI too") {
+      return command;
+    }
+
+    const { command: cmd, args } = splitCommand(command);
+    const defaultName = path.basename(cmd).replace(/\.[^.]+$/, "") || "server";
+    const name = await vscode.window.showInputBox({
+      title: "Name for this saved MCP server",
+      value: defaultName,
+      ignoreFocusOut: true,
+    });
+    if (!name) {
+      return command;
+    }
+
+    let overwrite = false;
+    try {
+      await saveMcpServer(name, { command: cmd, args });
+    } catch (err) {
+      if (!(err instanceof McpServerNameTakenError)) {
+        vscode.window.showErrorMessage(
+          `Couldn't save "${name}" to the pycodeloop registry: ${(err as Error).message}`
+        );
+        return command;
+      }
+      const action = await vscode.window.showWarningMessage(
+        `"${name}" already exists in the pycodeloop registry. Overwrite it?`,
+        "Overwrite",
+        "Cancel"
+      );
+      if (action !== "Overwrite") {
+        return command;
+      }
+      overwrite = true;
+    }
+
+    if (overwrite) {
+      try {
+        await saveMcpServer(name, { command: cmd, args }, { overwrite: true });
+      } catch (err) {
+        vscode.window.showErrorMessage(
+          `Couldn't save "${name}" to the pycodeloop registry: ${(err as Error).message}`
+        );
+        return command;
+      }
+    }
+
+    return `saved:${name}`;
+  }
+
   async toggleWorkspace(next: boolean): Promise<void> {
     await updateSetting("workspace", next);
     await this.postSettings();
@@ -370,7 +425,9 @@ export class SettingsController {
       if (!command) {
         return;
       }
-      await updateSetting("mcpServers", addServer(servers, command));
+
+      const entry = await this.maybeSaveToRegistry(command);
+      await updateSetting("mcpServers", addServer(servers, entry));
     } else {
       const removed = parseServerLabel(picked);
       if (!removed) {
