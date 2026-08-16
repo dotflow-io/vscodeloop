@@ -34,6 +34,7 @@ const menuDelegationCheck = document.getElementById("menu-delegation-check");
 const menuMemory = document.getElementById("menu-memory");
 const menuMemoryCheck = document.getElementById("menu-memory-check");
 const menuMcp = document.getElementById("menu-mcp");
+const menuReloadSkills = document.getElementById("menu-reload-skills");
 const menuReload = document.getElementById("menu-reload");
 const menuSettings = document.getElementById("menu-settings");
 const statusDot = document.getElementById("status-dot");
