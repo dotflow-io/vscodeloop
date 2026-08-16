@@ -5,6 +5,7 @@ import { API_KEY_SECRET, providerKeySecret } from "../../services/credentials.se
 import { PostMessage, ResolveSetting } from "../chat/chat.types";
 import { PROVIDER_CATALOG, findProviderDef } from "./providerCatalog";
 import { ADD_MCP_SERVER_LABEL, addServer, parseServerLabel, removeServer, toQuickPickLabels } from "./mcpServerList";
+import { saveMcpServer, splitCommand } from "../../services/mcpRegistry.service";
 
 export class SettingsController {
   constructor(
@@ -342,6 +343,35 @@ export class SettingsController {
     this.reload();
   }
 
+  /** Offers to save a newly-typed MCP launch command into pycodeloop's
+   * native `saved:<name>` registry (`~/.pycodeloop/config.json`) instead
+   * of keeping only the raw command in VS Code settings — so the same
+   * server is usable from the CLI (`--mcp saved:<name>`) too. Returns
+   * the entry to store in `pycodeloop.mcpServers`: `saved:<name>` if the
+   * user opted in, otherwise the raw command unchanged. */
+  private async maybeSaveToRegistry(command: string): Promise<string> {
+    const choice = await vscode.window.showQuickPick(["Just this workspace", "Save for reuse in the CLI too"], {
+      title: "Save this MCP server for pycodeloop CLI reuse?",
+    });
+    if (choice !== "Save for reuse in the CLI too") {
+      return command;
+    }
+
+    const { command: cmd, args } = splitCommand(command);
+    const defaultName = path.basename(cmd).replace(/\.[^.]+$/, "") || "server";
+    const name = await vscode.window.showInputBox({
+      title: "Name for this saved MCP server",
+      value: defaultName,
+      ignoreFocusOut: true,
+    });
+    if (!name) {
+      return command;
+    }
+
+    saveMcpServer(name, { command: cmd, args });
+    return `saved:${name}`;
+  }
+
   async manageMcpServers(): Promise<void> {
     const servers = readSettings().mcpServers;
 
@@ -363,7 +393,9 @@ export class SettingsController {
       if (!command) {
         return;
       }
-      await updateSetting("mcpServers", addServer(servers, command));
+
+      const entry = await this.maybeSaveToRegistry(command);
+      await updateSetting("mcpServers", addServer(servers, entry));
     } else {
       const removed = parseServerLabel(picked);
       if (!removed) {
