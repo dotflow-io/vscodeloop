@@ -81,6 +81,7 @@ export default tseslint.config(
         menuMemoryCheck: "writable",
         menuProvider: "writable",
         menuReload: "writable",
+        menuReloadSkills: "writable",
         menuSessions: "writable",
         menuSettings: "writable",
         menuSkills: "writable",
