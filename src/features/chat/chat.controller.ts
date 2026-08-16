@@ -31,10 +31,12 @@ export class ChatController {
 
   async startConnection(): Promise<void> {
     if (!readSettings().provider) {
+      this.pendingSkillsRefresh = false;
       this.post({ type: "needsSetup" });
       return;
     }
     if (!(await this.hasCli())) {
+      this.pendingSkillsRefresh = false;
       this.post({ type: "cliMissing", command: this.resolveSetting(readSettings().command) });
       return;
     }
