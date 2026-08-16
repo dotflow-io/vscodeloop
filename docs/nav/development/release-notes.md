@@ -1,5 +1,14 @@
 # Release Notes
 
+## v0.5.0
+
+- [📦 Marketplace - Build 0.5.0](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
+- [🪲 Bug: Fix last assistant message missing after a tool call (#28)](https://github.com/dotflow-io/vscodeloop/pull/29)
+- [⚙️ Feature: Add in-chat toggle for the workspace jail (#30)](https://github.com/dotflow-io/vscodeloop/pull/31)
+- [🪲 Bug: Stop reverting a custom model to the provider default (#32)](https://github.com/dotflow-io/vscodeloop/pull/33)
+- [⚙️ Feature: Add a way to force skills re-scan, `--skills-refresh` (#34)](https://github.com/dotflow-io/vscodeloop/pull/35)
+- [⚙️ Feature: Share MCP servers with pycodeloop's native `saved:` registry (#36)](https://github.com/dotflow-io/vscodeloop/pull/37)
+
 ## v0.4.1
 
 - [📦 Marketplace - Build 0.4.1](https://marketplace.visualstudio.com/items?itemName=fernandocelmer.pycodeloop)
