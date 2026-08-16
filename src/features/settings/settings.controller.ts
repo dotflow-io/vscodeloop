@@ -69,13 +69,13 @@ export class SettingsController {
 
   private storedModelFor(def: (typeof PROVIDER_CATALOG)[number]): string {
     const stored = this.context.globalState.get<string>(this.providerModelKey(def.id));
-    return stored && def.models.includes(stored) ? stored : def.defaultModel;
+    return stored || def.defaultModel;
   }
 
   private async healStaleModel(): Promise<void> {
     const settings = readSettings();
     const def = findProviderDef(this.activeProviderId(settings.provider));
-    if (!def || !settings.model || def.models.includes(settings.model)) {
+    if (!def || settings.model) {
       return;
     }
     await updateSetting("model", def.defaultModel);
