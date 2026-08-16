@@ -16,6 +16,7 @@ import { FORWARDED_NOTIFICATIONS, PostMessage, ResolveSetting } from "./chat.typ
 
 export class ChatController {
   private client: RpcClient | undefined;
+  private pendingSkillsRefresh = false;
 
   constructor(
     private readonly context: vscode.ExtensionContext,
@@ -158,8 +159,10 @@ export class ChatController {
       workspace: settings.workspace,
       autoApprove: settings.autoApprove,
       mcpServers: settings.mcpServers,
+      skillsRefresh: this.pendingSkillsRefresh,
       resolveSetting: (value) => this.resolveSetting(value),
     });
+    this.pendingSkillsRefresh = false;
     const apiKey = await this.context.secrets.get(API_KEY_SECRET);
     const auth = this.readAuthFor(settings.provider);
     const env = spawnEnvForApiKey(apiKey, providerApiKeyEnvNames(auth));
@@ -226,5 +229,10 @@ export class ChatController {
   reload(): void {
     this.dispose();
     void this.startConnection();
+  }
+
+  reloadSkills(): void {
+    this.pendingSkillsRefresh = true;
+    this.reload();
   }
 }
