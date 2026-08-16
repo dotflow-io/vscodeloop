@@ -20,6 +20,7 @@ export type WebviewMessage =
   | { type: "toggleMemory"; next: boolean }
   | { type: "manageMcpServers" }
   | { type: "reload" }
+  | { type: "reloadSkills" }
   | { type: "installCli" }
   | { type: "updateCli" }
   | { type: "openSettings" }
